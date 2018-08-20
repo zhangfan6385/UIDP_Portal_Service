@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>STORE.Security</AssemblyName>
+    <RootNamespace>STORE.Security</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ZIP.cs" />
+  </ItemGroup>
+
+</Project>

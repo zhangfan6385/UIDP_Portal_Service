@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>STORE.ODS</AssemblyName>
+    <RootNamespace>STORE.ODS</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\STORE.UTILITY\STORE.UTILITY.csproj" />
+  </ItemGroup>
+
+</Project>
