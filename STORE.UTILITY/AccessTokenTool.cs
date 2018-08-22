@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Text;
-using UIDP.Security;
+using STORE.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
     public class AccessTokenTool
     {

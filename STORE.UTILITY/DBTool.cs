@@ -6,11 +6,11 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using UIDP.DB;
+using STORE.DB;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
     public class DBTool
     {

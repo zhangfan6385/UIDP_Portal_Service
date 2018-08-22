@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 
-namespace UIDP.Security
+namespace STORE.Security
 {
     /// <summary>
     /// 安全助手

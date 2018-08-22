@@ -9,7 +9,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace UIDP.LOG
+namespace STORE.LOG
 {
     public class ClsSysLog
     {

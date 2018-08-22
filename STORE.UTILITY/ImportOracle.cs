@@ -7,7 +7,7 @@ using System.Data.OracleClient;
 using System.Text;
 using System.Threading;
 
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
    public class ImportOracle
     {

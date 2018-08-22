@@ -1,6 +1,6 @@
 using System;
 
-namespace UIDP.DB
+namespace STORE.DB
 {
 	/// <summary>
 	/// ClsDBFactory 的摘要说明。

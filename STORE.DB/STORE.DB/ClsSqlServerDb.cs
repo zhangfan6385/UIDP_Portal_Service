@@ -9,7 +9,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
-namespace UIDP.DB
+namespace STORE.DB
 {
 	/// <summary>
 	/// ClsSqlServerDb 的摘要说明。

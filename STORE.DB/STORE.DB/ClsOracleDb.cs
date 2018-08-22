@@ -9,7 +9,7 @@ using System.Data;
 using System.Data.Common;
 using System.Data.OracleClient;
 
-namespace UIDP.DB
+namespace STORE.DB
 {
 
 	/// <summary>

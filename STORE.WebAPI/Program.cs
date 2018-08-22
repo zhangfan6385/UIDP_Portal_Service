@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace UIDP.WebAPI
+namespace STORE.WebAPI
 {
     public class Program
     {

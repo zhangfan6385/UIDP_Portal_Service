@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Linq;
 
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
     public class KVTool
     {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using UIDP.ODS;
-using UIDP.UTILITY;
+using STORE.ODS;
+using STORE.UTILITY;
 
-namespace UIDP.BIZModule
+namespace STORE.BIZModule
 {
    public class UserLoginModule
     {
@@ -266,6 +266,8 @@ namespace UIDP.BIZModule
         {
             return db.getLoginByID(userId);
         }
-
+        public DataTable getProject(string userid) {
+            return db.getProject(userid);
+        }
     }
 }

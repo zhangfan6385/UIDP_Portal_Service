@@ -3,7 +3,7 @@ using System.Data;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
     public static class JsonConversionExtensions
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace UIDP.BIZModule.Models
+namespace STORE.BIZModule.Models
 {
     [Serializable]
     public class ts_uidp_userinfo

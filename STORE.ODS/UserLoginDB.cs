@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using UIDP.UTILITY;
+using STORE.UTILITY;
 using Newtonsoft.Json.Linq;
 
-namespace UIDP.ODS
+namespace STORE.ODS
 {
     public class UserLoginDB
     {
@@ -239,14 +239,22 @@ where USER_ID = '{0}'
         {
             if (!string.IsNullOrEmpty(userCode))
             {
-                string sql = String.Format("select * from ts_uidp_userinfo where USER_DOMAIN='{0}' "
+                string sql = String.Format(@"select a.*,c.ORG_ID,c.ORG_NAME from ts_uidp_userinfo a 
+join ts_uidp_org_user b on a.USER_ID = b.USER_ID
+JOIN ts_uidp_org c ON c.ORG_ID = b.ORG_ID where a.USER_DOMAIN='{0}' AND C.ORG_CODE not LIKE '100%' "
                    , userCode);
                 return db.GetDataTable(sql);
             }
             throw new Exception("用户名不能为空！");
 
         }
-
+        public DataTable getProject(string userid) {
+            string sql = "select a.* from ts_store_project ";
+            if (!string.IsNullOrEmpty(userid)) {
+                sql += " where PROJECT_PARTYB_ID='" + userid + "'";
+            }
+            return db.GetDataTable(sql);
+        }
         public DataTable getLoginByID(string userId)
         {
             if (!string.IsNullOrEmpty(userId))

@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 
-namespace UIDP.WebAPI
+namespace STORE.WebAPI
 {
     public class Startup
     {

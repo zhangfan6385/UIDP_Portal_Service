@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace UIDP.LOG
+namespace STORE.LOG
 {
     public class SysLog
     {

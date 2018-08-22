@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
    public class ImportSqlServer
     {

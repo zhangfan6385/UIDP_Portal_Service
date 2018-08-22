@@ -8,7 +8,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Data;
 using System.Data.Common;
-namespace UIDP.DB
+namespace STORE.DB
 {
 	/// <summary>
 	/// 数据库数据类型类

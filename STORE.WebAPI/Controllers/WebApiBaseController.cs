@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace UIDP.WebAPI.Controllers
+namespace STORE.WebAPI.Controllers
 {
     //    [Produces("application/json")]
     [Route("api/WebApiBase")]
@@ -34,11 +34,11 @@ namespace UIDP.WebAPI.Controllers
                     {
                         context.Result = new ObjectResult(new { code = 50008, msg = "没有找到X-Token" });
                     }
-                    string userId = UIDP.UTILITY.AccessTokenTool.GetUserId(AccessToken);
+                    string userId = STORE.UTILITY.AccessTokenTool.GetUserId(AccessToken);
                     UserId = userId;
                     if (actionName == "info")
                     {
-                        UIDP.UTILITY.Message mes = UIDP.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken, "user");
+                        STORE.UTILITY.Message mes = STORE.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken, "user");
                         if (mes.code != 2000)
                         {
                             context.Result = new ObjectResult(mes);
@@ -56,18 +56,18 @@ namespace UIDP.WebAPI.Controllers
                         {
                             UserName = mm.getUserInfoByUserId(userId).USER_NAME;
                         }
-                        UIDP.UTILITY.Message mes = UIDP.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken, admin);
+                        STORE.UTILITY.Message mes = STORE.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken, admin);
                         if (mes.code != 2000)
                         {
                             context.Result = new ObjectResult(mes);
                         }
                     }
-                UIDP.LOG.SysLog log = new LOG.SysLog();
+                STORE.LOG.SysLog log = new LOG.SysLog();
                 log.Info(DateTime.Now, userId, UserName, ClientIp, 0, actionName, "",1);
             }
             catch (Exception ex)
             {
-                UIDP.LOG.SysLog log = new LOG.SysLog();
+                STORE.LOG.SysLog log = new LOG.SysLog();
                 log.Info(DateTime.Now, UserId, UserName, ClientIp, 1, actionName, ex.Message.Length > 120 ? ex.Message.Substring(0, 100) : ex.Message,1);
                 context.Result = new ObjectResult(new { code = -1, msg = "验证token时程序出错", result = ex.Message });
             }
@@ -87,7 +87,7 @@ namespace UIDP.WebAPI.Controllers
                     {
                         context.Result = new ObjectResult(new { code = 50008, msg = "没有找到X-Token" });
                     }
-                    string userId = UIDP.UTILITY.AccessTokenTool.GetUserId(AccessToken);
+                    string userId = STORE.UTILITY.AccessTokenTool.GetUserId(AccessToken);
                     BIZModule.UserModule mm = new BIZModule.UserModule();
                     string admin = mm.getAdminCode();
                     if (userId == admin)
@@ -98,19 +98,19 @@ namespace UIDP.WebAPI.Controllers
                     {
                         UserName = mm.getUserInfoByUserId(userId).USER_NAME;
                     }
-                    UIDP.UTILITY.Message mes = UIDP.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken,admin);
+                    STORE.UTILITY.Message mes = STORE.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken,admin);
                     if (mes.code != 2000)
                     {
                         context.Result = new ObjectResult(mes);
                     }
                     UserId = userId;
                     ClientIp = Extension.GetClientUserIp(Request.HttpContext);
-                    UIDP.LOG.SysLog log = new LOG.SysLog();
+                    STORE.LOG.SysLog log = new LOG.SysLog();
                     log.Info(DateTime.Now, userId, UserName, ClientIp, 0, actionName, "");
                 }
                 catch (Exception ex)
                 {
-                    UIDP.LOG.SysLog log = new LOG.SysLog();
+                    STORE.LOG.SysLog log = new LOG.SysLog();
                     log.Info(DateTime.Now, UserId, UserName, ClientIp, 1, actionName, ex.Message.Length > 120 ? ex.Message.Substring(0, 100) : ex.Message);
                     context.Result = new ObjectResult(new { code = -1, msg = "验证token时程序出错", result = ex.Message });
                 }

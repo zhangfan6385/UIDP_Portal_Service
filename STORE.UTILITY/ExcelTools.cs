@@ -8,7 +8,7 @@ using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.XSSF.UserModel;
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
     public class ExcelTools
     {

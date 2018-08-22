@@ -10,7 +10,7 @@ using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
     public class ImportMySql
     {

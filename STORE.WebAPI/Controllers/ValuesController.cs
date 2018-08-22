@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace UIDP.WebAPI.Controllers
+namespace STORE.WebAPI.Controllers
 {
     [Route("[controller]")]
     public class ValuesController : Controller

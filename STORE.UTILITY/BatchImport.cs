@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Text;
 
-namespace UIDP.UTILITY
+namespace STORE.UTILITY
 {
    public class BatchImport
     {

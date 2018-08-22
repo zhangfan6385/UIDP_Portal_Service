@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using UIDP.UTILITY;
-namespace UIDP.ODS
+using STORE.UTILITY;
+namespace STORE.ODS
 {
     public class UserDB
     {
