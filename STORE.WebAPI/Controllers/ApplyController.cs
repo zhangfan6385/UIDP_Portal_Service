@@ -99,5 +99,18 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> res = mm.fetchServerDetailList(userid, projectid, resourceid);
             return Json(res);
         }
+        /// <summary>
+        /// 开发平台查询
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="projectid"></param>
+        /// <param name="resourceid"></param>
+        /// <returns></returns>
+        [HttpGet("fetchPlatformList")]
+        public IActionResult fetchPlatformList(string userid, string projectid, string resourceid, int platType, bool isFirst)
+        {
+            Dictionary<string, object> res = mm.fetchPlatformList( userid,  projectid,  resourceid,  platType,  isFirst);
+            return Json(res);
+        }
     }
 }
