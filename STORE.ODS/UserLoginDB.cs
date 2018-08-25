@@ -249,9 +249,11 @@ JOIN ts_uidp_org c ON c.ORG_ID = b.ORG_ID where a.USER_DOMAIN='{0}' AND C.ORG_CO
 
         }
         public DataTable getProject(string userid) {
-            string sql = "select a.* from ts_store_project ";
+            string sql = "select a.* from ts_store_project a ";
+            sql += " join ts_uidp_org b on b.ORG_ID=a.PROJECT_PARTYB_ID ";
+            sql += " join ts_uidp_org_user c on c.ORG_ID=b.ORG_ID  ";
             if (!string.IsNullOrEmpty(userid)) {
-                sql += " where PROJECT_PARTYB_ID='" + userid + "'";
+                sql += " where c.USER_ID='" + userid + "'";
             }
             return db.GetDataTable(sql);
         }

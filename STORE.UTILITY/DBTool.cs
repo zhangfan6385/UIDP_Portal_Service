@@ -39,13 +39,13 @@ namespace STORE.UTILITY
             {
                 db.Open();
                 DataSet ds = new DataSet();
-                DataTable dt = new DataTable();
+                DataTable dt;
                 foreach (var item in data)
                 {
+                    dt = new DataTable();
                     db.Fill(dt, item.Value);
                     dt.TableName = item.Key;
                     ds.Tables.Add(dt);
-                    dt.Clear();
                 }
                 db.Close();
                 return ds;

@@ -63,7 +63,7 @@ namespace STORE.WebAPI.Controllers
                         code = 2000,
                         message = "",
                         token = accessToken,
-                        projectInfo = dtProject,
+                        projectInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtProject)),
                         userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
                         roleLevel = ""
                     });
