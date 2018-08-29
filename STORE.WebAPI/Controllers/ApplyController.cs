@@ -96,6 +96,7 @@ namespace STORE.WebAPI.Controllers
         [HttpGet("fetchServerDetailList")]
         public IActionResult fetchServerDetailList(string userid, string projectid, string resourceid)
         {
+            Dictionary<string, object> d = new Dictionary<string, object>();
             Dictionary<string, object> res = mm.fetchServerDetailList(userid, projectid, resourceid);
             return Json(res);
         }

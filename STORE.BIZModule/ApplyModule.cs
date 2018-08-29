@@ -207,7 +207,11 @@ namespace STORE.BIZModule
                         mod.IS_DELETE = dtCom.Rows[0]["IS_DELETE"] == null ? 0 : int.Parse(dtCom.Rows[0]["IS_DELETE"].ToString());
                         mod.CREATER = dtCom.Rows[0]["CREATER"] == null ? "" : dtCom.Rows[0]["CREATER"].ToString();
                         mod.CREATE_DATE = dtCom.Rows[0]["CREATE_DATE"] == null ? DateTime.Now : Convert.ToDateTime(dtCom.Rows[0]["CREATE_DATE"].ToString());
-                        mod.CHECK_STATE = dtCom.Rows[0]["CHECK_STATE"] == null ? -1 : int.Parse(dtCom.Rows[0]["CHECK_STATE"].ToString());
+                        //mod.CHECK_STATE = dtCom.Rows[0]["CHECK_STATE"] == null ? -1 : Convert.ToInt32(dtCom.Rows[0]["CHECK_STATE"].ToString());
+                        if (dtCom.Rows[0]["CHECK_STATE"] == null || dtCom.Rows[0]["CHECK_STATE"].ToString() == "")
+                        {
+                            mod.CHECK_STATE = -1;
+                        }
                         List<ComponentDetail> list = new List<ComponentDetail>();
                         if (dtComDetail != null && dtComDetail.Rows.Count > 0)
                         {
