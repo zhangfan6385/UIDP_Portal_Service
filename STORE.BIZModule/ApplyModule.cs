@@ -326,7 +326,7 @@ namespace STORE.BIZModule
                         mod.MANAGE_ROLE_ID = dtSer.Rows[0]["MANAGE_ROLE_ID"] == null ? "" : dtSer.Rows[0]["MANAGE_ROLE_ID"].ToString();
                         mod.SERVICE_URL = dtSer.Rows[0]["SERVICE_URL"] == null ? "" : dtSer.Rows[0]["SERVICE_URL"].ToString();
                         mod.SUIT_PLAT = dtSer.Rows[0]["SUIT_PLAT"] == null ? "" : dtSer.Rows[0]["SUIT_PLAT"].ToString();
-                        mod.IS_DELETE = dtSer.Rows[0]["IS_DELETE"] == null ? 0 : int.Parse(dtSer.Rows[0]["IS_DELETE"].ToString());
+                        //mod.IS_DELETE = dtSer.Rows[0]["IS_DELETE"] == null ? 0 : int.Parse(dtSer.Rows[0]["IS_DELETE"].ToString());
                         mod.CREATER = dtSer.Rows[0]["CREATER"] == null ? "" : dtSer.Rows[0]["CREATER"].ToString();
                         if (dtSer.Rows[0]["CREATE_DATE"] == null || dtSer.Rows[0]["CREATE_DATE"].ToString() == "")
                         {
@@ -335,6 +335,9 @@ namespace STORE.BIZModule
                         else
                         {
                             mod.CREATE_DATE = Convert.ToDateTime(dtSer.Rows[0]["CREATE_DATE"].ToString());
+                        }
+                        if(dtSer.Rows[0]["IS_DELETE"]==null|| dtSer.Rows[0]["IS_DELETE"].ToString() == "0"){
+                            mod.IS_DELETE = 0;
                         }
                         if (dtSer.Rows[0]["CHECK_STATE"] == null || dtSer.Rows[0]["CHECK_STATE"].ToString() == "")
                         {

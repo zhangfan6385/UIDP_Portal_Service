@@ -15,7 +15,7 @@ namespace STORE.ODS
         /// <returns></returns>
         public DataSet getApplyRecord(string userId)
         {
-            string sql = "select * from  ts_store_application_record where  USER_ID='" + userId + "'  order by  RECORD_ISREAD asc ,RECORD_CREATEDATE desc";
+            string sql = "select * from  ts_store_application_record where  USER_ID='" + userId + "'  order by  RECORD_ISREAD asc ,CREATE_DATE desc";
             string sql2 = " select count(*) from  ts_store_application_record where  RECORD_ISREAD=0 and USER_ID='" + userId + "' ";
             Dictionary<string, string> list = new Dictionary<string, string>();
             list.Add("detail", sql);

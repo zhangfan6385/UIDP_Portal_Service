@@ -16,12 +16,12 @@ namespace STORE.ODS
         public DataTable fetchMyCommunityCollectionList(Dictionary<string, object> d)
         {
             string sql = "select a.COLLECTION_ID,b.* from ts_community_collection a INNER JOIN ts_community_post b on a.POST_ID=b.POST_ID ";
-            sql += " where a.IS_DELETE=0 ";
+            sql += " where b.IS_DELETE=0 ";
             if (d.Count > 0)
             {
                 if (d["userId"] != null && d["userId"].ToString() != "")
                 {
-                    sql += " and a.USER_ID = '" + d["userId"].ToString() + "'";
+                    sql += " and b.USER_ID = '" + d["userId"].ToString() + "'";
                 }
             }
             return db.GetDataTable(sql);
