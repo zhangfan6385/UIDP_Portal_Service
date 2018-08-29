@@ -67,6 +67,23 @@ namespace STORE.BIZModule
         {
             return db.updateCommunityPostArticle(id);
         }
-
+        /// <summary>
+        /// 添加回复
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public string addReply(Dictionary<string, object> d)
+        {
+            return db.addReply(d);
+        }
+        /// <summary>
+        /// 添加评论
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public string addComment(Dictionary<string, object> d)
+        {
+            return db.addComment(d);
+        }
     }
 }

@@ -15,8 +15,9 @@ namespace STORE.ODS
         /// <returns></returns>
         public DataTable fetchCommunityPostList(Dictionary<string, object> d)
         {
-            string sql = "select * from ts_community_post a ";
-            sql += " where 1=1 and IS_DELETE=0 ";
+            string sql = "select a.* ,(select count(*) from ts_community_comment where POST_ID=a.POST_ID) COMMONT_COUNT ";
+            sql += " from ts_community_post a ";
+            sql += " where  IS_DELETE=0 ";
             if (d.Count > 0)
             {
                 if (d["POST_TYPE"] != null && d["POST_TYPE"].ToString() != "")
@@ -50,6 +51,7 @@ namespace STORE.ODS
                     DateTime edate = Convert.ToDateTime(d["END_SEND_DATE"].ToString());
                     sql += " and SEND_DATE between '" + bdate.Year + "-" + bdate.Month + "-" + bdate.Day + " 00:00:00' and '" + edate.Year + "-" + edate.Month + "-" + edate.Day + " 23:59:59'";
                 }
+                sql += " ORDER BY a.CREATE_DATE desc ";
             }
             return db.GetDataTable(sql);
         }
@@ -130,8 +132,58 @@ namespace STORE.ODS
 
             return db.ExecutByStringResult(sql);
         }
+        /// <summary>
+        /// 添加回复
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public string addReply(Dictionary<string, object> d) {
+            string sql = " insert into ts_community_reply (REPLY_ID,COMMENT_ID,REPLY_TARGET_ID," +
+                "REPLY_TYPE,CONTENT,FROM_UID,TO_UID,CREATE_DATE) values(";
+            sql += "'";
+            sql += Guid.NewGuid().ToString()+"";
+            sql += "'";
+            sql += d["COMMENT_ID"] == null ? "" : d["COMMENT_ID"].ToString() + "',";
+            sql += "'";
+            sql += d["REPLY_TARGET_ID"] == null ? "" : d["REPLY_TARGET_ID"].ToString() + "',";
+            sql += d["REPLY_TYPE"].ToString() + ",";
+            sql += "'";
+            sql += d["CONTENT"] == null ? "" : d["CONTENT"].ToString() + "',";
+            sql += "'";
+            sql += d["FROM_UID"] == null ? "" : d["FROM_UID"].ToString() + "',";
+            sql += "'";
+            sql += d["TO_UID"] == null ? "" : d["TO_UID"].ToString() + "',";
+            sql += "'";
+            sql += DateTime.Now.ToString("yyyy-MM-dd") + "')";
+            return db.ExecutByStringResult(sql);
 
-      
+        }
+        /// <summary>
+        /// 添加评论
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public string addComment(Dictionary<string, object> d)
+        {
+            string sql = " insert into ts_community_comment (COMMENT_ID,POST_ID,CONTENT," +
+                "FROM_UID,TO_UID,CREATE_DATE,IS_RIGHT_ANSWER,BONUS_POINTS) values(";
+            sql += "'";
+            sql += Guid.NewGuid().ToString() + ",";
+            sql += "'";
+            sql += d["POST_ID"] == null ? "" : d["POST_ID"].ToString() + "',";
+            sql += "'";
+            sql += d["CONTENT"] == null ? "" : d["CONTENT"].ToString() + "',";
+            sql += "'";
+            sql += d["FROM_UID"] == null ? "" : d["FROM_UID"].ToString() + "',";
+            sql += "'";
+            sql += d["TO_UID"] == null ? "" : d["TO_UID"].ToString() + "',";
+            sql += "'";
+            sql += DateTime.Now.ToString("yyyy-MM-dd") + "',";
+            sql += d["IS_RIGHT_ANSWER"] == null ? "" : d["IS_RIGHT_ANSWER"].ToString() + ",";
+            sql += "";
+            sql += d["BONUS_POINTS"] == null ? "0": d["BONUS_POINTS"].ToString() + ")";
+            return db.ExecutByStringResult(sql);
 
+        }
     }
 }

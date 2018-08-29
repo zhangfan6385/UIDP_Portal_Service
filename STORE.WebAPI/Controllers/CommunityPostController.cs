@@ -137,6 +137,67 @@ namespace STORE.WebAPI.Controllers
             }
             return Json(r);
         }
-      
+        /// <summary>
+        /// 添加评论
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost("addComment")]
+        public IActionResult addComment([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                string b = mm.addComment(d);
+                if (b == "")
+                {
+                    r["message"] = "成功";
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = -1;
+                    r["message"] = b;
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return Json(r);
+        }
+        /// <summary>
+        /// 添加回复
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost("addReply")]
+        public IActionResult addReply([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                string b = mm.addReply(d);
+                if (b == "")
+                {
+                    r["message"] = "成功";
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = -1;
+                    r["message"] = b;
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return Json(r);
+        }
     }
 }
