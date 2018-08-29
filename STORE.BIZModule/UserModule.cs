@@ -468,7 +468,11 @@ namespace STORE.BIZModule
         {
             return db.GetUserAndOrgByUserId(USER_ID);
         }
-
+        
+        public DataTable getCommunityUserInfo(string USER_ID)
+        {
+            return db.getCommunityUserInfo(USER_ID);
+        }
         public string GetDistinctSelf(DataTable SourceDt, string filedName)
         {
             StringBuilder sb = new StringBuilder();

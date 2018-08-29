@@ -388,5 +388,37 @@ namespace STORE.ODS
         {
             return Enum.GetName(typeof(DB.DBTYPE), (int)db.db.dbType);
         }
+
+        public DataTable getCommunityUserInfo(string USER_ID)
+        {
+            string sql = @"SELECT
+	a.*, (
+		SELECT
+			COUNT(1)
+		FROM
+			ts_community_post
+		WHERE
+			ts_community_post.USER_ID = a.USER_ID
+	) SEND_NUM,
+	(
+		SELECT
+			COUNT(1)
+		FROM
+			ts_community_comment
+		WHERE
+			ts_community_comment.FROM_UID = a.USER_ID
+	) COMMENT_NUM,
+	(
+		SELECT
+			COUNT(1)
+		FROM
+			ts_community_comment
+		WHERE
+			ts_community_comment.FROM_UID = a.USER_ID
+	) REPLY_NUM
+FROM
+	ts_uidp_userinfo a where a.USER_ID='" + USER_ID + "'";
+            return db.GetDataTable(sql);
+        }
     }
 }

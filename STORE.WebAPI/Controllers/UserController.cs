@@ -173,6 +173,28 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> res = mm.fetchUserRoleList(d);
             return Json(res);
         }
+        [HttpPost("CommunityUserInfo")]
+        public IActionResult CommunityUserInfo([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                r["code"] = 2000;
+                r["message"] ="操作成功";
+                if (d.Keys.Contains("userId") && d["userId"] != null && d["userId"].ToString() != "")
+                {
+                    DataTable dt = mm.getCommunityUserInfo(d["userId"].ToString());
+                    r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt));
+                }
+            }
+            catch (Exception ex)
+            {
+                r["code"] = -1;
+                r["message"] = ex.Message;
+            }
+            return Json(r);
+        }
 
     }
 }
