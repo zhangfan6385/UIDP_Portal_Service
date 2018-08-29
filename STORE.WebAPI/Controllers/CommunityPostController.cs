@@ -16,7 +16,7 @@ namespace STORE.WebAPI.Controllers
 {
     [Produces("application/json")]
     [Route("communitypost")]
-    public class CommunityPostController : WebApiBaseController
+    public class CommunityPostController : Controller
     {
         CommunityPostModule mm = new CommunityPostModule();
         /// <summary>
@@ -181,6 +181,37 @@ namespace STORE.WebAPI.Controllers
             try
             {
                 string b = mm.addReply(d);
+                if (b == "")
+                {
+                    r["message"] = "成功";
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = -1;
+                    r["message"] = b;
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return Json(r);
+        }
+        /// <summary>
+        /// 贴子浏览量加1
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost("updateComunityPostLookTimes")]
+        public IActionResult updateComunityPostLookTimes([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                string b = mm.updateComunityPostLookTimes(d["POST_ID"].ToString());
                 if (b == "")
                 {
                     r["message"] = "成功";

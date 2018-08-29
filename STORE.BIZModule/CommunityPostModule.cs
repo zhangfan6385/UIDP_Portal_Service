@@ -85,5 +85,11 @@ namespace STORE.BIZModule
         {
             return db.addComment(d);
         }
+        /// <summary>
+        /// 帖子浏览量+1
+        /// </summary>
+        /// <param name="POST_ID"></param>
+        /// <returns></returns>
+        public string updateComunityPostLookTimes(string POST_ID) => db.updateComunityPostLookTimes(POST_ID);
     }
 }

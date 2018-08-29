@@ -185,5 +185,15 @@ namespace STORE.ODS
             return db.ExecutByStringResult(sql);
 
         }
+        /// <summary>
+        /// 帖子浏览量+1
+        /// </summary>
+        /// <param name="POST_ID"></param>
+        /// <returns></returns>
+        public string updateComunityPostLookTimes(string POST_ID) {
+            string sql = "update ts_community_post set BROWSE_NUM=(case when BROWSE_NUM is null then 0 else BROWSE_NUM end )+1 ";
+            sql += "where POST_ID='"+ POST_ID + "'";
+            return db.ExecutByStringResult(sql);
+        }
     }
 }
