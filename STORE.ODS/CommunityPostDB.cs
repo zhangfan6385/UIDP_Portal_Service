@@ -195,5 +195,26 @@ namespace STORE.ODS
             sql += "where POST_ID='"+ POST_ID + "'";
             return db.ExecutByStringResult(sql);
         }
+        /// <summary>
+        /// 获取帖子排行
+        /// </summary>
+        /// <returns></returns>
+        public DataTable getTopPost() {
+            string sql = " select count(*) TOTAL , b.USER_NAME from ts_community_post a ";
+            sql += " join ts_uidp_userinfo b on a.USER_ID=b.USER_ID ";
+            sql += "  where a.IS_DELETE=0 group by a.USER_ID ,b.USER_NAME ORDER BY count(*) desc";
+            return db.GetDataTable(sql);
+        }
+        public DataSet getPostByID(string POST_ID) {
+            Dictionary<string, string> list = new Dictionary<string, string>();
+            string sql = "select *from ts_community_post where POST_ID='"+ POST_ID + "'";//获取帖子信息
+            string sql2 = "select a.*,b.USER_NAME from ts_community_comment a join ts_uidp_userinfo b on b.USER_ID=a.FROM_UID"+
+ "where a.POST_ID ='" + POST_ID + "' order BY a.CREATE_DATE  ";//获取评论
+            string sql3 = "";//获取回复信息
+            list.Add("dtP",sql);
+            list.Add("dtC",sql2);
+            list.Add("dtR",sql3);
+            db.GetDataSet(list);
+        }
     }
 }

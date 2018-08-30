@@ -230,5 +230,14 @@ namespace STORE.WebAPI.Controllers
             }
             return Json(r);
         }
+        /// <summary>
+        /// 查询帖子top
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("getTopPost")]
+        public IActionResult getTopPost()
+        {
+            return Json(mm.getTopPost());
+        }
     }
 }

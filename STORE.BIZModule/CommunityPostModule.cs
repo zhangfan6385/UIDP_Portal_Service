@@ -91,5 +91,45 @@ namespace STORE.BIZModule
         /// <param name="POST_ID"></param>
         /// <returns></returns>
         public string updateComunityPostLookTimes(string POST_ID) => db.updateComunityPostLookTimes(POST_ID);
+        /// <summary>
+        /// 获取帖子top
+        /// </summary>
+        /// <returns></returns>
+
+        public Dictionary<string, object> getTopPost() {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataTable dt = db.getTopPost();
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    if (dt.Rows.Count > 10)
+                    {
+                        r["items"] = KVTool.TableToListDic(KVTool.GetPagedTable(dt, 1, 10));
+                        r["code"] = 2000;
+                        r["message"] = "查询成功";
+                    }
+                    else
+                    {
+                        r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt));
+                        r["code"] = 2000;
+                        r["message"] = "查询成功";
+                    }
+                    return r;
+                }
+                r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(new DataTable()));
+                r["code"] = 2000;
+                r["message"] = "查询成功";
+            }
+
+            catch (Exception e)
+            {
+                r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(new DataTable()));
+                r["code"] = -1;
+                r["message"] =  e.Message;
+            }
+            return r;
+        }
+
     }
 }
