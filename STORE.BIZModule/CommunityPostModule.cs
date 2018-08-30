@@ -131,5 +131,85 @@ namespace STORE.BIZModule
             return r;
         }
 
+
+        /// <summary>
+        /// 查询帖子详情
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public Dictionary<string, object> fetchPostDetail(Dictionary<string, object> d)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+
+                //int limit = d["limit"] == null ? 100 : int.Parse(d["limit"].ToString());
+                //int page = d["page"] == null ? 1 : int.Parse(d["page"].ToString());
+                DataSet ds = db.getPostByID(d["POST_ID"].ToString());
+                PostModel postModel = new PostModel();
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dt = ds.Tables[0];
+                    DataTable dtDetail = new DataTable();
+                    if (ds.Tables.Count > 1)
+                    {
+                        dtDetail = ds.Tables[1];
+                    }
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow dr in dt.Rows)
+                        {
+                            postModel.POST_ID = dr["POST_ID"].ToString();
+                            postModel.USER_ID = dr["USER_ID"] == null ? "" : dr["USER_ID"].ToString();
+                            postModel.USER_NAME = dr["USER_NAME"] == null ? "" : dr["USER_NAME"].ToString();
+                            postModel.TITLE_NAME = dr["TITLE_NAME"] == null ? "" : dr["TITLE_NAME"].ToString();
+                            postModel.POST_TYPE = Convert.ToInt32(dr["POST_TYPE"].ToString());
+                            postModel.POST_CONTENT = dr["POST_CONTENT"].ToString();
+                            postModel.SCORE_POINT =Convert.ToDouble(dr["SCORE_POINT"].ToString());
+                            postModel.BROWSE_NUM = Convert.ToInt32(dr["BROWSE_NUM"].ToString()); ;
+                            postModel.SEND_DATE = dr["SEND_DATE"] == null ? DateTime.Now : DateTime.Parse(dr["SEND_DATE"].ToString());
+                            List<PostComment> listdetail = new List<PostComment>();
+                            if (dtDetail != null && dtDetail.Rows.Count > 0)
+                            {
+                                //DataRow[] arry = dtDetail.Select("NOTICE_ID='" + dr["NOTICE_ID"].ToString() + "'");
+                                listdetail.Clear();
+
+                                    foreach (DataRow item in dtDetail.Rows)
+                                    {
+                                        PostComment postComment = new PostComment();
+                                    postComment.COMMENT_ID = item["COMMENT_ID"].ToString();
+                                    postComment.POST_ID = item["POST_ID"].ToString();
+                                    postComment.CONTENT = item["CONTENT"].ToString();
+                                    postComment.FROM_UID = item["FROM_UID"].ToString();
+                                    postComment.USER_NAME = item["USER_NAME"].ToString();
+                                    postComment.IS_RIGHT_ANSWER= Convert.ToInt32(dr["IS_RIGHT_ANSWER"].ToString());
+                                    postComment.BONUS_POINTS= Convert.ToDouble(dr["BONUS_POINTS"].ToString());
+                                    postComment.CREATE_DATE = item["CREATE_DATE"] == null ? DateTime.Now : DateTime.Parse(item["CREATE_DATE"].ToString());
+                                        listdetail.Add(postComment);
+                                    }
+                            }
+                            postModel.children = listdetail;
+                        }
+
+                        r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(postModel));// KVTool.TableToListDic(KVTool.GetPagedTable(dt, page, limit));
+                        r["code"] = 2000;
+                        r["message"] = "查询成功";
+                    }
+                }
+                else
+                {
+                    r["items"] = null;
+                    r["code"] = 2000;
+                    r["message"] = "查询成功";
+                }
+            }
+            catch (Exception e)
+            {
+                r["items"] = null;
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return r;
+        }
     }
 }

@@ -16,7 +16,7 @@ namespace STORE.WebAPI.Controllers
 {
     [Produces("application/json")]
     [Route("communitypost")]
-    public class CommunityPostController : Controller
+    public class CommunityPostController : WebApiBaseController
     {
         CommunityPostModule mm = new CommunityPostModule();
         /// <summary>
@@ -54,6 +54,7 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
+                d["POST_IP"] = ClientIp;
                 string b = mm.createCommunityPostArticle(d);
                 if (b == "")
                 {
@@ -85,6 +86,7 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
+                d["POST_IP"] = ClientIp;
                 string b = mm.updateCommunityPostData(d);
                 if (b == "")
                 {
@@ -238,6 +240,18 @@ namespace STORE.WebAPI.Controllers
         public IActionResult getTopPost()
         {
             return Json(mm.getTopPost());
+        }
+        /// <summary>
+        /// 查询帖子详情
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost("fetchPostDetail")]
+        public IActionResult fetchPostDetail([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> res = mm.fetchPostDetail(d);
+            return Json(res);
         }
     }
 }
