@@ -52,8 +52,8 @@ namespace STORE.ODS
             sb.Append(d["APPLY_TYPE"] == null ? "" : d["APPLY_TYPE"].ToString() + ",");
             sb.Append("'");
             sb.Append(d["USE_CONTENT"] == null ? "" : d["USE_CONTENT"].ToString() + "',");
-            sb.Append("'");
             sb.Append(d["USE_TYPE"] == null ? "" : d["USE_TYPE"].ToString() + ",");
+            sb.Append("'");
             sb.Append(d["APPLY_RESOURCE_ID"] == null ? "" : d["APPLY_RESOURCE_ID"].ToString() + "',");
             sb.Append("'");
             sb.Append(d["APPLY_LINKMAN"] == null ? "" : d["APPLY_LINKMAN"].ToString() + "',");
