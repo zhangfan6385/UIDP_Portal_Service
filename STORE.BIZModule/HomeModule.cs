@@ -98,13 +98,13 @@ namespace STORE.BIZModule
             }
             return r;
         }
-        public Dictionary<string, object> fetchCountList()
+        public Dictionary<string, object> fetchCountList(int limit)
         {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                DataTable dtComponentMonth = new DataTable();
-                DataTable dtServerMonth = new DataTable();
+                //DataTable dtComponentMonth = new DataTable();
+                //DataTable dtServerMonth = new DataTable();
                 DataTable dtComponentTop = new DataTable();
                 DataTable dtServerCountTop = new DataTable();
 
@@ -125,49 +125,61 @@ namespace STORE.BIZModule
                     {
                         dtServerCountTop = dtserT.Clone();
                     }
-                    for (int i = 0; i < 10; i++)
+                    if (limit == 10)
                     {
-                        if (dtcomT != null && dtcomT.Rows.Count > i)
+                        for (int i = 0; i < 10; i++)
                         {
-                            dtComponentTop.ImportRow(dtcomT.Rows[i]);
+                            if (dtcomT != null && dtcomT.Rows.Count > i)
+                            {
+                                dtComponentTop.ImportRow(dtcomT.Rows[i]);
+                            }
+                            if (dtserT != null && dtserT.Rows.Count > i)
+                            {
+                                dtServerCountTop.ImportRow(dtserT.Rows[i]);
+                            }
                         }
-                        if (dtserT != null && dtserT.Rows.Count > i)
-                        {
-                            dtServerCountTop.ImportRow(dtserT.Rows[i]);
-                        }
+                        r["dtComponentTop"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtComponentTop));
+                        r["dtServerCountTop"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtServerCountTop));
+                        r["code"] = 2000;
+                        r["message"] = "查询成功";
+                        return r;
+                    }
+                    else {
+                        r["dtComponentTop"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtcomT));
+                        r["dtServerCountTop"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtserT));
+                        r["code"] = 2000;
+                        r["message"] = "查询成功";
+                        return r;
                     }
 
                 }
-                if (dtCom != null && dtCom.Rows.Count > 0)
-                {
-                    dtComponentMonth = dtCom.Clone();
-                }
-                if (dtServer != null && dtServer.Rows.Count > 0)
-                {
-                    dtServerMonth = dtServer.Clone();
-                }
-                for (int i = 0; i < 6; i++)
-                {
-                    if (dtCom != null && dtCom.Rows.Count > i)
-                    {
-                        dtComponentMonth.ImportRow(dtCom.Rows[i]);
-                    }
-                    if (dtServer != null && dtServer.Rows.Count > i)
-                    {
-                        dtServerMonth.ImportRow(dtServer.Rows[i]);
-                    }
-                }
-                r["dtComponentMonth"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtComponentMonth));
-                r["dtServerMonth"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtServerMonth));
-                r["dtComponentTop"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtComponentTop));
-                r["dtServerCountTop"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtServerCountTop));
-                r["code"] = 2000;
-                r["message"] = "查询成功";
+                //if (dtCom != null && dtCom.Rows.Count > 0)
+                //{
+                //    dtComponentMonth = dtCom.Clone();
+                //}
+                //if (dtServer != null && dtServer.Rows.Count > 0)
+                //{
+                //    dtServerMonth = dtServer.Clone();
+                //}
+                //for (int i = 0; i < 6; i++)
+                //{
+                //    if (dtCom != null && dtCom.Rows.Count > i)
+                //    {
+                //        dtComponentMonth.ImportRow(dtCom.Rows[i]);
+                //    }
+                //    if (dtServer != null && dtServer.Rows.Count > i)
+                //    {
+                //        dtServerMonth.ImportRow(dtServer.Rows[i]);
+                //    }
+                //}
+                //r["dtComponentMonth"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtComponentMonth));
+                //r["dtServerMonth"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtServerMonth));
+                
             }
             catch (Exception e)
             {
-                r["total"] = 0;
-                r["items"] = null;
+                r["dtComponentTop"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(new object()));
+                r["dtServerCountTop"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(new object()));
                 r["code"] = -1;
                 r["message"] = e.Message;
             }
