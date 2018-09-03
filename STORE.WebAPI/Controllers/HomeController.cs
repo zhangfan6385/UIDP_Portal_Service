@@ -61,9 +61,9 @@ namespace STORE.WebAPI.Controllers
         /// <param name="page"></param>
         /// <returns></returns>
          [HttpGet("fetchCountList")]
-        public IActionResult fetchCountList()
+        public IActionResult fetchCountList(int limit)
         {
-            Dictionary<string, object> res = mm.fetchCountList();
+            Dictionary<string, object> res = mm.fetchCountList(limit);
             return Json(res);
         }
         [HttpGet("getTopPost")]
