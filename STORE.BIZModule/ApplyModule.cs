@@ -401,7 +401,7 @@ namespace STORE.BIZModule
             return r;
         }
         /// <summary>
-        /// 获取服务详情
+        /// 开发平台查询
         /// </summary>
         /// <param name="userid"></param>
         /// <param name="projectid"></param>
@@ -487,6 +487,7 @@ namespace STORE.BIZModule
                             {
                                 foreach (DataRow rowd in dtPlatDetail.Rows)
                                 {
+                                    if (row["PLAT_ID"].ToString()== rowd["PLAT_ID"].ToString()) { 
                                     PlatformDetail detail = new PlatformDetail();
                                     detail.PLAT_DETAIL_ID = rowd["PLAT_DETAIL_ID"] == null ? "" : rowd["PLAT_DETAIL_ID"].ToString();
                                     detail.PLAT_ID = rowd["PLAT_ID"] == null ? "" : rowd["PLAT_ID"].ToString();
@@ -501,17 +502,11 @@ namespace STORE.BIZModule
                                         detail.CREATE_DATE = Convert.ToDateTime(rowd["CREATE_DATE"].ToString());
                                     }
                                     detail.FILE_NAME = rowd["FILE_NAME"] == null ? "" : rowd["FILE_NAME"].ToString();
-                                    if (rowd["FILE_SIZE"] == null || rowd["FILE_SIZE"].ToString() == "")
-                                    {
-                                        detail.FILE_SIZE = 0.0;
-                                    }
-                                    else
-                                    {
-                                        detail.FILE_SIZE = double.Parse(rowd["FILE_SIZE"].ToString());
-                                    }
+                                    detail.FILE_SIZE = rowd["FILE_SIZE"].ToString();
                                     detail.FILE_TYPE = rowd["FILE_TYPE"] == null ? 1 : int.Parse(rowd["FILE_TYPE"].ToString());
                                     detail.FILE_URL = rowd["FILE_URL"] == null ? "" : rowd["FILE_URL"].ToString();
                                     list.Add(detail);
+                                    }
                                 }
                             }
                             mod.children = list;
@@ -519,19 +514,10 @@ namespace STORE.BIZModule
                         }
                     }
                     if (modList.Count>0) {
-                         if (isFirst) {
-                            PlatformMoudle mod = modList[0];
-                            r["code"] = 2000;
-                            r["message"] = "";
-                            r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(mod));
-                            return r;
-                        }
-                        else {
                             r["code"] = 2000;
                             r["message"] = "";
                             r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(modList));
                             return r;
-                        }
                     }
                    
                 }

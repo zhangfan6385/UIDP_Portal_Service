@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using STORE.BIZModule;
+using STORE.UTILITY;
+
 namespace STORE.WebAPI.Controllers
 {
     [Produces("application/json")]
@@ -13,6 +17,7 @@ namespace STORE.WebAPI.Controllers
     {
         HomeModule mm = new HomeModule();
         CommunityPostModule cpm = new CommunityPostModule();
+        ApplyModule amm = new ApplyModule();
         /// <summary>
         /// 查询社区信息
         /// </summary>
@@ -64,6 +69,73 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> res = mm.fetchCountList(limit);
             return Json(res);
         }
-
+        /// <summary>
+        /// 获取组件列表
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpGet("fetchComponentList")]
+        public IActionResult fetchComponentList(string limit, string page)
+        {
+            Dictionary<string, object> d = new Dictionary<string, object>();
+            d["limit"] = limit;
+            d["page"] = page;
+            Dictionary<string, object> res = amm.fetchComponentList(d);
+            return Json(res);
+        }
+        /// <summary>
+        /// 获取组件列表详情
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpGet("fetchComponentDetailList")]
+        public IActionResult fetchComponentDetailList(string userid, string projectid, string resourceid)
+        {
+            Dictionary<string, object> res = amm.fetchComponentDetailList(userid, projectid, resourceid);
+            return Json(res);
+        }
+        /// <summary>
+        /// 获取服务列表
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpGet("fetchServerList")]
+        public IActionResult fetchServerList(string limit, string page)
+        {
+            Dictionary<string, object> d = new Dictionary<string, object>();
+            d["limit"] = limit;
+            d["page"] = page;
+            Dictionary<string, object> res = amm.fetchServerList(d);
+            return Json(res);
+        }
+        /// <summary>
+        /// 获取服务列表详情
+        /// </summary>
+        /// <param name="limit"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
+        [HttpGet("fetchServerDetailList")]
+        public IActionResult fetchServerDetailList(string userid, string projectid, string resourceid)
+        {
+            Dictionary<string, object> d = new Dictionary<string, object>();
+            Dictionary<string, object> res = amm.fetchServerDetailList(userid, projectid, resourceid);
+            return Json(res);
+        }
+        /// <summary>
+        /// 开发平台查询
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="projectid"></param>
+        /// <param name="resourceid"></param>
+        /// <returns></returns>
+        [HttpGet("fetchPlatformList")]
+        public IActionResult fetchPlatformList(string userid, string projectid, string resourceid, int platType, bool isFirst)
+        {
+            Dictionary<string, object> res = amm.fetchPlatformList(userid, projectid, resourceid, platType, isFirst);
+            return Json(res);
+        }
     }
 }

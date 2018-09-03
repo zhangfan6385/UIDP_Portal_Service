@@ -137,15 +137,25 @@ namespace STORE.ODS
         /// <returns></returns>
         public DataSet getPlatform(string userid, string projectid, string resourceid,int platType)
         {
+
             Dictionary<string, string> d = new Dictionary<string, string>();
-            string sql = " select a.*,b.CHECK_STATE from ts_store_platform a  ";
-            sql += " left join ts_store_application b on a.PLAT_ID=b.APPLY_RESOURCE_ID ";
+            string sql = " select a.*  ";
+            if (userid != null && userid != "")
+            {
+                sql += " ,(select b.CHECK_STATE  from ts_store_application b   ";
+                sql += " where a.PLAT_ID=b.APPLY_RESOURCE_ID  ";
+                sql += " and (b.APPLY_EXPIRET>'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' or b.APPLY_EXPIRET is null or b.APPLY_EXPIRET='') ";
+                sql += " and case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
+                sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
+                sql += " ) CHECK_STATE ";//按照有效期判断审核状态 登录后调用
+            }
+            else {
+                sql += " ,-1 CHECK_STATE";
+            }
+            sql += "  from ts_store_platform a  ";
             sql += " where a.IS_DELETE=0 and a.PLAT_TYPE=" + platType;
-            sql += " and case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '"+projectid+"' else b.PROJECT_ID end = '"+projectid+"' ";
-            sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
-            sql += " and case when b.APPLY_RESOURCE_ID is null or b.APPLY_RESOURCE_ID='' THEN '" + resourceid + "' else b.APPLY_RESOURCE_ID end = '" + resourceid + "' ";
-            sql += " order by CHECK_DATE,APPLY_DATE,a.CREATE_DATE desc ";
-            string sql2 = " select * from  ts_store_platform_detail where PLAT_ID='" + resourceid + "' ";
+            sql += " order by a.CREATE_DATE desc ";
+            string sql2 = " select * from  ts_store_platform_detail  ";
             d.Add("dtPlat", sql);
             d.Add("dtPlatDetail", sql2);
             return db.GetDataSet(d);

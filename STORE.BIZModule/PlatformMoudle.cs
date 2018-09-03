@@ -34,7 +34,7 @@ namespace STORE.BIZModule
         public string FILE_NAME { get; set; }
         public int FILE_TYPE { get; set; }
         public string FILE_URL { get; set; }
-        public Double FILE_SIZE { get; set; }
+        public string FILE_SIZE { get; set; }
         public string CREATER { get; set; }
         public DateTime CREATE_DATE { get; set; }
     }
