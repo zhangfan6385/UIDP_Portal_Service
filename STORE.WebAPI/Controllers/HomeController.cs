@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
 using STORE.BIZModule;
 namespace STORE.WebAPI.Controllers
 {
@@ -13,6 +14,7 @@ namespace STORE.WebAPI.Controllers
     {
         HomeModule mm = new HomeModule();
         CommunityPostModule cpm = new CommunityPostModule();
+
         /// <summary>
         /// 查询社区信息
         /// </summary>
@@ -62,6 +64,19 @@ namespace STORE.WebAPI.Controllers
         public IActionResult fetchCountList()
         {
             Dictionary<string, object> res = mm.fetchCountList();
+            return Json(res);
+        }
+        [HttpGet("getTopPost")]
+        public IActionResult getTopPost()
+        {
+            return Json(cpm.getTopPost());
+        }
+
+        [HttpPost("fetchPostDetail")]
+        public IActionResult fetchPostDetail([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> res = cpm.fetchPostDetail(d);
             return Json(res);
         }
 
