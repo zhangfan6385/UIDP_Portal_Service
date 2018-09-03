@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using STORE.BIZModule;
 using STORE.UTILITY;
 
@@ -68,6 +69,11 @@ namespace STORE.WebAPI.Controllers
         {
             Dictionary<string, object> res = mm.fetchCountList(limit);
             return Json(res);
+        }
+        [HttpGet("getTopPost")]
+        public IActionResult getTopPost()
+        {
+            return Json(cpm.getTopPost());
         }
         /// <summary>
         /// 获取组件列表
@@ -137,5 +143,13 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> res = amm.fetchPlatformList(userid, projectid, resourceid, platType, isFirst);
             return Json(res);
         }
+        [HttpPost("fetchPostDetail")]
+        public IActionResult fetchPostDetail([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> res = cpm.fetchPostDetail(d);
+            return Json(res);
+        }
+
     }
 }

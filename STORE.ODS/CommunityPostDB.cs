@@ -214,7 +214,7 @@ namespace STORE.ODS
             Dictionary<string, string> list = new Dictionary<string, string>();
             string sql = "select * from ts_community_post where POST_ID='"+ POST_ID + "'";//获取帖子信息
             string sql2 = "select a.*,b.USER_NAME from ts_community_comment a join ts_uidp_userinfo b on b.USER_ID=a.FROM_UID"+
- "where a.POST_ID ='" + POST_ID + "' order BY a.CREATE_DATE  ";//获取评论
+ " where a.POST_ID ='" + POST_ID + "' order BY a.CREATE_DATE  ";//获取评论
             //string sql3 = "select * from ts_community_reply where POST_ID='"+ POST_ID + "'";//获取回复信息
             list.Add("dtP",sql);
             list.Add("dtC",sql2);
