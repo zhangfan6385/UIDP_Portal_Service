@@ -11,7 +11,7 @@ namespace STORE.BIZModule
         public string PLAT_NAME { get; set; }
         public string PLAT_VERSION { get; set; }
         public DateTime PLAT_PUBLISHDATE { get; set; }
-        public double PLAT_SIZE { get; set; }
+        public string PLAT_SIZE { get; set; }
         public string SOFTWARE_LANGUAGE { get; set; }
         public string SUIT_PLAT { get; set; }
         public string APPLICATION_BROWSER { get; set; }
@@ -25,6 +25,7 @@ namespace STORE.BIZModule
         public string CREATER { get; set; }
         public DateTime CREATE_DATE { get; set; }
         public int CHECK_STATE { get; set; }
+        public string URL { get; set; }
         public List<PlatformDetail> children { get; set; }
     }
     public class PlatformDetail

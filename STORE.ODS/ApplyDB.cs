@@ -38,7 +38,7 @@ namespace STORE.ODS
             StringBuilder sb = new StringBuilder();
             sb.Append(" insert into ts_store_application (APPLY_ID,APPLY_ORG_ID,APPLY_ORG_NAME," +
                 "PROJECT_ID,PROJECT_NAME,APPLY_TYPE,USE_CONTENT,USE_TYPE,APPLY_RESOURCE_ID" +
-                ",APPLY_LINKMAN,APPLY_PHONE,APPLY_EMAIL,APPLY_USERID)  ");
+                ",APPLY_LINKMAN,APPLY_PHONE,APPLY_EMAIL,APPLY_USERID,APPLY_DATE,CHECK_STATE,IS_DELETE)  ");
             sb.Append("  values( '" + Guid.NewGuid().ToString() + "',");
             sb.Append("'");
             sb.Append(d["APPLY_ORG_ID"] == null ? "" : d["APPLY_ORG_ID"].ToString() + "',");
@@ -62,9 +62,22 @@ namespace STORE.ODS
             sb.Append("'");
             sb.Append(d["APPLY_EMAIL"] == null ? "" : d["APPLY_EMAIL"].ToString() + "',");
             sb.Append("'");
-            sb.Append(d["APPLY_USERID"] == null ? "" : d["APPLY_USERID"].ToString() + "'");
+            sb.Append(d["APPLY_USERID"] == null ? "" : d["APPLY_USERID"].ToString() + "',");
+            sb.Append("'");
+            sb.Append(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0,0");
             sb.Append("  ) ");
             return db.ExecutByStringResult(sb.ToString());
+        }
+        /// <summary>
+        /// 查询是否已申请
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public DataTable getApply(Dictionary<string, object> d) {
+            string sql = " select * from  ts_store_application where APPLY_USERID='"+ d["APPLY_USERID"]+"' ";
+            sql+= " and PROJECT_ID='"+ d["PROJECT_ID"] + "' and APPLY_RESOURCE_ID='"+ d["APPLY_RESOURCE_ID"] + "'";
+            sql += " and (CHECK_STATE=0 or (CHECK_STATE=1 and (APPLY_EXPIRET>'"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"' or APPLY_EXPIRET='"+ DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'))) ";
+            return db.GetDataTable(sql);
         }
         /// <summary>
         ///组件信息和top

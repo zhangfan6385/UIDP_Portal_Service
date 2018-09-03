@@ -112,6 +112,12 @@ namespace STORE.BIZModule
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
+                DataTable dt = db.getApply(d);
+                if (dt!=null&&dt.Rows.Count>0) {
+                    r["code"] = -1;
+                    r["message"] = "申请失败：已申请过，或还在有效期内！";
+                    return r;
+                }
                 string res = db.createApply(d);
                 if (res == "")
                 {
@@ -436,15 +442,7 @@ namespace STORE.BIZModule
                             {
                                 mod.PLAT_PUBLISHDATE = DateTime.Parse(row["PLAT_PUBLISHDATE"].ToString());
                             }
-                            if (row["PLAT_SIZE"] == null || row["PLAT_SIZE"].ToString() == "")
-                            {
-                                mod.PLAT_SIZE = 0;
-                            }
-                            else
-                            {
-                                mod.PLAT_SIZE =double.Parse(row["PLAT_SIZE"].ToString());
-                            }
-                           
+                            mod.PLAT_SIZE = row["PLAT_SIZE"] == null ? "" : row["PLAT_SIZE"].ToString();
                             mod.SOFTWARE_LANGUAGE = row["MANAGE_TEL"] == null ? "" : row["MANAGE_TEL"].ToString();
                             mod.SUIT_PLAT = row["MANAGE_ROLE_ID"] == null ? "" : row["MANAGE_ROLE_ID"].ToString();
                             mod.PLAT_RUNREQUIRE =row["MANAGE_ROLE_ID"] == null ? "" : row["MANAGE_ROLE_ID"].ToString();
@@ -487,7 +485,10 @@ namespace STORE.BIZModule
                             {
                                 foreach (DataRow rowd in dtPlatDetail.Rows)
                                 {
-                                    if (row["PLAT_ID"].ToString()== rowd["PLAT_ID"].ToString()) { 
+                                    if (row["PLAT_ID"].ToString()== rowd["PLAT_ID"].ToString()) {
+                                        if (rowd["FILE_TYPE"].ToString()=="0") {
+                                            mod.URL = rowd["FILE_URL"] == null ? "" : rowd["FILE_URL"].ToString();
+                                        }
                                     PlatformDetail detail = new PlatformDetail();
                                     detail.PLAT_DETAIL_ID = rowd["PLAT_DETAIL_ID"] == null ? "" : rowd["PLAT_DETAIL_ID"].ToString();
                                     detail.PLAT_ID = rowd["PLAT_ID"] == null ? "" : rowd["PLAT_ID"].ToString();
