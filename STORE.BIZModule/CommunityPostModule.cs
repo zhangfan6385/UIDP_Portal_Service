@@ -226,5 +226,15 @@ namespace STORE.BIZModule
             }
             return r;
         }
+
+        public string deleteCommit(Dictionary<string, object> d)
+        {
+            return db.delCommentByID(d);
+        }
+        
+        public string deletePost(Dictionary<string,object> d)
+        {
+            return db.delPostByID(d);
+        }
     }
 }

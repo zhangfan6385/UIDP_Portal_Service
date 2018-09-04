@@ -21,7 +21,7 @@ namespace STORE.ODS
             {
                 if (d["userId"] != null && d["userId"].ToString() != "")
                 {
-                    sql += " and b.USER_ID = '" + d["userId"].ToString() + "'";
+                    sql += " AND a.COLLECTION_PERSON_ID = '" + d["userId"].ToString() + "'";
                 }
             }
             return db.GetDataTable(sql);
@@ -66,10 +66,9 @@ namespace STORE.ODS
             {
                 if(d["POST_ID"]!=null&& d["COLLECTION_PERSON_ID"] != null)
                 {
-                    sql += "POST_ID=" + d["POST_ID"].ToString() + "AND COLLECTION_PERSON_ID" + d["COLLECTION_PERSON_ID"].ToString();
+                    sql += " POST_ID='" + d["POST_ID"].ToString() + "'" + "AND COLLECTION_PERSON_ID='" + d["COLLECTION_PERSON_ID"].ToString() + "'";
                 }
             }
-
             return db.ExecutByStringResult(sql);
         }
         public string GetIsNullStr(object obj)

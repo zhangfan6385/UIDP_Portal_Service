@@ -61,6 +61,7 @@ namespace STORE.ODS
         {
             string col = "";
             string val = "";
+            string score = "";
             foreach (var v in d)
             {
                 if (v.Value != null)
@@ -82,10 +83,28 @@ namespace STORE.ODS
             {
                 val = val.Substring(1);
             }
+            if (d["POST_TYPE"].ToString()=="1")
+            {
+                score = db.ExecutByStringResult("select SCORE from ts_community_score_conf WHERE OPER_TYPE='share'");
+            }
+            else if(d["POST_TYPE"].ToString() == "2")
+            {
+                score = db.ExecutByStringResult("select SCORE from ts_community_score_conf WHERE OPER_TYPE='help'");
+            }
+            else
+            {
+                score = db.ExecutByStringResult("select SCORE from ts_community_score_conf WHERE OPER_TYPE='feedback'");
+            }
 
+            
             //string sql = "INSERT INTO ts_community_post(" + col + ",CREATE_DATE,IS_DELETE) VALUES(" + val + ",'"+ DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0)";
             string sql = "INSERT INTO ts_community_post(" + col + ",SEND_DATE,CREATE_DATE,IS_DELETE) VALUES(" + val + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0)";
-            return db.ExecutByStringResult(sql);
+            string sql1 = "insert into ts_community_score_detail(USER_ID,SCORE,POSTDATE,) values(" + d["USER_ID"].ToString() + "," + score+"," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ")";
+            List<string> sqllist = new List<string>();
+            sqllist.Add(sql);
+            sqllist.Add(sql1);
+            return db.Executs(sqllist);
+            //return db.ExecutByStringResult(sql);
         }
         public string GetIsNullStr(object obj)
         {
@@ -224,6 +243,29 @@ namespace STORE.ODS
             list.Add("dtU", sql3);
             //list.Add("dtR",sql3);
             return db.GetDataSet(list);
+        }
+
+        public string delCommentByID(Dictionary<string, object> d)
+        {
+            string sql = "delete from ts_community_comment where COMMENT_ID='";
+            if (d.Count > 0)
+            {
+                if (d["COMMENT_ID"] != null)
+                {
+                    sql += d["COMMENT_ID"].ToString() + "'";
+                }
+            }
+            return db.ExecutByStringResult(sql);
+        }
+
+        public string delPostByID(Dictionary<string,object> d)
+        {
+            string sql1 = "delete from ts_community_comment where POST_ID='" + d["POST_ID"].ToString() + "'";
+            string sql2 = "delete from ts_community_post where POST_ID='" + d["POST_ID"].ToString() + "'";
+            List<string> sql = new List<string>();
+            sql.Add(sql1);
+            sql.Add(sql2);
+            return db.Executs(sql);
         }
     }
 }
