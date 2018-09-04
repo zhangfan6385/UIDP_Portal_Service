@@ -58,6 +58,20 @@ namespace STORE.ODS
 
             return db.ExecutByStringResult(sql);
         }
+
+        public string deleteCommunityCollectionArticle(Dictionary<string, object> d)
+        {
+            string sql = "DELETE FROM ts_community_collection WHERE";
+            if (d.Count > 0)
+            {
+                if(d["POST_ID"]!=null&& d["COLLECTION_PERSON_ID"] != null)
+                {
+                    sql += "POST_ID=" + d["POST_ID"].ToString() + "AND COLLECTION_PERSON_ID" + d["COLLECTION_PERSON_ID"].ToString();
+                }
+            }
+
+            return db.ExecutByStringResult(sql);
+        }
         public string GetIsNullStr(object obj)
         {
             if (obj == null)

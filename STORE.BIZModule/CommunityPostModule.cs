@@ -145,15 +145,21 @@ namespace STORE.BIZModule
 
                 //int limit = d["limit"] == null ? 100 : int.Parse(d["limit"].ToString());
                 //int page = d["page"] == null ? 1 : int.Parse(d["page"].ToString());
-                DataSet ds = db.getPostByID(d["POST_ID"].ToString());
+                if (d["USER_ID"] == null)
+                {
+                    d["USER_ID"] = " ";
+                };
+                DataSet ds = db.getPostByID(d["POST_ID"].ToString(),d["USER_ID"].ToString());
                 PostModel postModel = new PostModel();
                 if (ds != null && ds.Tables.Count > 0)
                 {
                     DataTable dt = ds.Tables[0];
                     DataTable dtDetail = new DataTable();
+                    DataTable dtCollection = new DataTable();
                     if (ds.Tables.Count > 1)
                     {
                         dtDetail = ds.Tables[1];
+                        dtCollection = ds.Tables[2];
                     }
                     if (dt != null && dt.Rows.Count > 0)
                     {
@@ -167,6 +173,7 @@ namespace STORE.BIZModule
                             postModel.POST_CONTENT = dr["POST_CONTENT"].ToString();
                             postModel.SCORE_POINT =Convert.ToDouble(dr["SCORE_POINT"].ToString());
                             postModel.BROWSE_NUM = Convert.ToInt32(dr["BROWSE_NUM"].ToString()); ;
+                            //postModel.COLLECTION_ID = dr["COLLECTION_ID"] == null ? " ": dr["COLLECTION_ID"].ToString();
                             postModel.SEND_DATE = dr["SEND_DATE"] == null ? DateTime.Now : DateTime.Parse(dr["SEND_DATE"].ToString());
                             List<PostComment> listdetail = new List<PostComment>();
                             if (dtDetail != null && dtDetail.Rows.Count > 0)
@@ -182,11 +189,19 @@ namespace STORE.BIZModule
                                     postComment.CONTENT = item["CONTENT"].ToString();
                                     postComment.FROM_UID = item["FROM_UID"].ToString();
                                     postComment.USER_NAME = item["USER_NAME"].ToString();
-                                    postComment.IS_RIGHT_ANSWER= Convert.ToInt32(dr["IS_RIGHT_ANSWER"].ToString());
-                                    postComment.BONUS_POINTS= Convert.ToDouble(dr["BONUS_POINTS"].ToString());
+                                    //postComment.IS_RIGHT_ANSWER= Convert.ToInt32(dr["IS_RIGHT_ANSWER"].ToString());
+                                    //postComment.BONUS_POINTS= Convert.ToDouble(dr["BONUS_POINTS"].ToString());
                                     postComment.CREATE_DATE = item["CREATE_DATE"] == null ? DateTime.Now : DateTime.Parse(item["CREATE_DATE"].ToString());
                                         listdetail.Add(postComment);
                                     }
+                            }
+                            if (dtCollection.Rows.Count==0)
+                            {
+                                postModel.COLLECTION_STATE ="0";
+                            }
+                            else
+                            {
+                                postModel.COLLECTION_STATE = "1";
                             }
                             postModel.children = listdetail;
                         }

@@ -48,17 +48,22 @@ namespace STORE.BIZModule
             return db.createCommunityCollectionArticle(d);
         }
 
-      
+
 
         /// <summary>
         /// 删除
         /// </summary>
         /// <param name="d"></param>
         /// <returns></returns>
-        public string deleteCommunityCollectionArticle(string id)
+        /// 
+        public string deleteCommunityCollectionArticle(Dictionary<string, object> d)
         {
-            return db.deleteCommunityCollectionArticle(id);
+            return db.deleteCommunityCollectionArticle(d);
         }
+        //public string deleteCommunityCollectionArticle(string id)
+        //{
+        //    return db.deleteCommunityCollectionArticle(id);
+        //}
 
     }
 }

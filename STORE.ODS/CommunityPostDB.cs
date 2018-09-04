@@ -166,9 +166,9 @@ namespace STORE.ODS
         public string addComment(Dictionary<string, object> d)
         {
             string sql = " insert into ts_community_comment (COMMENT_ID,POST_ID,CONTENT," +
-                "FROM_UID,TO_UID,CREATE_DATE,IS_RIGHT_ANSWER,BONUS_POINTS) values(";
+                "FROM_UID,CREATE_DATE,IS_RIGHT_ANSWER,BONUS_POINTS) values(";
             sql += "'";
-            sql += Guid.NewGuid().ToString() + ",";
+            sql += Guid.NewGuid().ToString() + "',";
             sql += "'";
             sql += d["POST_ID"] == null ? "" : d["POST_ID"].ToString() + "',";
             sql += "'";
@@ -176,12 +176,13 @@ namespace STORE.ODS
             sql += "'";
             sql += d["FROM_UID"] == null ? "" : d["FROM_UID"].ToString() + "',";
             sql += "'";
-            sql += d["TO_UID"] == null ? "" : d["TO_UID"].ToString() + "',";
-            sql += "'";
+            //sql += d["TO_UID"] == null ? "" : d["TO_UID"].ToString() + "',";
+            //sql += "'";
             sql += DateTime.Now.ToString("yyyy-MM-dd") + "',";
             sql += d["IS_RIGHT_ANSWER"] == null ? "" : d["IS_RIGHT_ANSWER"].ToString() + ",";
             sql += "";
-            sql += d["BONUS_POINTS"] == null ? "0": d["BONUS_POINTS"].ToString() + ")";
+            sql += d["BONUS_POINTS"] == null ? "0" : d["BONUS_POINTS"].ToString();
+            sql += ")";
             return db.ExecutByStringResult(sql);
 
         }
@@ -210,14 +211,17 @@ namespace STORE.ODS
         /// </summary>
         /// <param name="POST_ID"></param>
         /// <returns></returns>
-        public DataSet getPostByID(string POST_ID) {
+        public DataSet getPostByID(string POST_ID,string USER_ID) {
             Dictionary<string, string> list = new Dictionary<string, string>();
             string sql = "select * from ts_community_post where POST_ID='"+ POST_ID + "'";//获取帖子信息
             string sql2 = "select a.*,b.USER_NAME from ts_community_comment a join ts_uidp_userinfo b on b.USER_ID=a.FROM_UID"+
  " where a.POST_ID ='" + POST_ID + "' order BY a.CREATE_DATE  ";//获取评论
+            string sql3 = "select COLLECTION_ID from ts_community_collection where POST_ID='" + POST_ID + "'";
+            sql3 += "AND COLLECTION_PERSON_ID='" + USER_ID + "'";
             //string sql3 = "select * from ts_community_reply where POST_ID='"+ POST_ID + "'";//获取回复信息
             list.Add("dtP",sql);
             list.Add("dtC",sql2);
+            list.Add("dtU", sql3);
             //list.Add("dtR",sql3);
             return db.GetDataSet(list);
         }

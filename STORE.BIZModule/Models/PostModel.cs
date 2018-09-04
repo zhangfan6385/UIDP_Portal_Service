@@ -29,6 +29,7 @@ namespace STORE.BIZModule
         public DateTime SEND_DATE { get; set; }
         public int BROWSE_NUM { get; set; }
         public double SCORE_POINT { get; set; }
+        public string COLLECTION_STATE { get; set; }
         public List<PostComment> children { get; set; }
     }
 }
