@@ -203,11 +203,11 @@ namespace STORE.BIZModule
                         mod.MANAGE_ROLE_ID = dtCom.Rows[0]["MANAGE_ROLE_ID"] == null ? "" : dtCom.Rows[0]["MANAGE_ROLE_ID"].ToString();
                         if (dtCom.Rows[0]["COMPONENT_SIZE"] == null || dtCom.Rows[0]["COMPONENT_SIZE"].ToString() == "")
                         {
-                            mod.COMPONENT_SIZE = 0.0;
+                            mod.COMPONENT_SIZE ="";
                         }
                         else
                         {
-                            mod.COMPONENT_SIZE = double.Parse(dtCom.Rows[0]["COMPONENT_SIZE"].ToString());
+                            mod.COMPONENT_SIZE = dtCom.Rows[0]["COMPONENT_SIZE"].ToString();
                         }
                         mod.SOFTWARE_LANGUAGE = dtCom.Rows[0]["SOFTWARE_LANGUAGE"] == null ? "" : dtCom.Rows[0]["SOFTWARE_LANGUAGE"].ToString();
                         mod.IS_DELETE = dtCom.Rows[0]["IS_DELETE"] == null ? 0 : int.Parse(dtCom.Rows[0]["IS_DELETE"].ToString());
@@ -218,28 +218,38 @@ namespace STORE.BIZModule
                         {
                             mod.CHECK_STATE = -1;
                         }
+                        else {
+                            mod.CHECK_STATE = Convert.ToInt32(dtCom.Rows[0]["CHECK_STATE"].ToString());
+                        }
                         List<ComponentDetail> list = new List<ComponentDetail>();
                         if (dtComDetail != null && dtComDetail.Rows.Count > 0)
                         {
                             foreach (DataRow row in dtComDetail.Rows)
                             {
-                                ComponentDetail detail = new ComponentDetail();
-                                detail.COMPONENT_DETAIL_ID =row["COMPONENT_DETAIL_ID"] == null ? "" :row["COMPONENT_DETAIL_ID"].ToString();
-                                detail.COMPONENT_ID =row["COMPONENT_ID"] == null ? "" :row["COMPONENT_ID"].ToString();
-                                detail.CREATER =row["CREATER"] == null ? "" :row["CREATER"].ToString();
-                                detail.CREATE_DATE =row["CREATE_DATE"] == null ? DateTime.Now : Convert.ToDateTime(dtComDetail.Rows[0]["CREATE_DATE"].ToString());
-                                detail.FILE_NAME =row["FILE_NAME"] == null ? "" :row["FILE_NAME"].ToString();
-                                if (dtComDetail.Rows[0]["FILE_SIZE"] == null ||row["FILE_SIZE"].ToString() == "")
-                                {
-                                    detail.FILE_SIZE = 0.0;
-                                }
-                                else
-                                {
-                                    detail.FILE_SIZE = double.Parse(dtComDetail.Rows[0]["FILE_SIZE"].ToString());
-                                }
-                                detail.FILE_TYPE =row["FILE_TYPE"] == null ? 1 : int.Parse(dtComDetail.Rows[0]["FILE_TYPE"].ToString());
-                                detail.FILE_URL =row["FILE_URL"] == null ? "" :row["FILE_URL"].ToString();
-                                list.Add(detail);
+                                    if (row["FILE_TYPE"].ToString() == "0")
+                                    {
+                                        mod.URL = row["FILE_URL"] == null ? "" : row["FILE_URL"].ToString();
+                                    }
+                                    else
+                                    {
+                                        ComponentDetail detail = new ComponentDetail();
+                                        detail.COMPONENT_DETAIL_ID = row["COMPONENT_DETAIL_ID"] == null ? "" : row["COMPONENT_DETAIL_ID"].ToString();
+                                        detail.COMPONENT_ID = row["COMPONENT_ID"] == null ? "" : row["COMPONENT_ID"].ToString();
+                                        detail.CREATER = row["CREATER"] == null ? "" : row["CREATER"].ToString();
+                                        detail.CREATE_DATE = row["CREATE_DATE"] == null ? DateTime.Now : Convert.ToDateTime(dtComDetail.Rows[0]["CREATE_DATE"].ToString());
+                                        detail.FILE_NAME = row["FILE_NAME"] == null ? "" : row["FILE_NAME"].ToString();
+                                        if (dtComDetail.Rows[0]["FILE_SIZE"] == null || row["FILE_SIZE"].ToString() == "")
+                                        {
+                                            detail.FILE_SIZE ="";
+                                        }
+                                        else
+                                        {
+                                            detail.FILE_SIZE =dtComDetail.Rows[0]["FILE_SIZE"].ToString();
+                                        }
+                                        detail.FILE_TYPE = row["FILE_TYPE"] == null ? 1 : int.Parse(dtComDetail.Rows[0]["FILE_TYPE"].ToString());
+                                        detail.FILE_URL = row["FILE_URL"] == null ? "" : row["FILE_URL"].ToString();
+                                        list.Add(detail);
+                                    }
                             }
                         }
                         mod.children = list;
@@ -489,6 +499,7 @@ namespace STORE.BIZModule
                                         if (rowd["FILE_TYPE"].ToString()=="0") {
                                             mod.URL = rowd["FILE_URL"] == null ? "" : rowd["FILE_URL"].ToString();
                                         }
+                                        else {
                                     PlatformDetail detail = new PlatformDetail();
                                     detail.PLAT_DETAIL_ID = rowd["PLAT_DETAIL_ID"] == null ? "" : rowd["PLAT_DETAIL_ID"].ToString();
                                     detail.PLAT_ID = rowd["PLAT_ID"] == null ? "" : rowd["PLAT_ID"].ToString();
@@ -507,6 +518,7 @@ namespace STORE.BIZModule
                                     detail.FILE_TYPE = rowd["FILE_TYPE"] == null ? 1 : int.Parse(rowd["FILE_TYPE"].ToString());
                                     detail.FILE_URL = rowd["FILE_URL"] == null ? "" : rowd["FILE_URL"].ToString();
                                     list.Add(detail);
+                                        }
                                     }
                                 }
                             }

@@ -97,14 +97,22 @@ namespace STORE.ODS
         public DataSet getComponentDetail(string userid, string projectid, string resourceid)
         {
             Dictionary<string, string> d = new Dictionary<string, string>();
-            string sql = " select a.*,b.CHECK_STATE from ts_store_component a  ";
-            sql += " left join ts_store_application b on a.COMPONENT_ID=b.APPLY_RESOURCE_ID ";
+            string sql = " select a.* ";
 
-            sql += " where case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
-            sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
-            sql += " and case when b.APPLY_RESOURCE_ID is null or b.APPLY_RESOURCE_ID='' THEN '" + resourceid + "' else b.APPLY_RESOURCE_ID end = '" + resourceid + "' ";
-           
-            sql += " order by CHECK_DATE,APPLY_DATE desc ";
+            if (userid != null && userid != "")
+            {
+                sql += " ,(select b.CHECK_STATE  from ts_store_application b   ";
+                sql += " where a.COMPONENT_ID=b.APPLY_RESOURCE_ID  ";
+                sql += " and (b.APPLY_EXPIRET>'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' or b.APPLY_EXPIRET is null or b.APPLY_EXPIRET='') ";
+                sql += " and case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
+                sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
+                sql += " ) CHECK_STATE ";//按照有效期判断审核状态 登录后调用
+            }
+            else
+            {
+                sql += " ,-1 CHECK_STATE";
+            }
+            sql += " from ts_store_component a where a.COMPONENT_ID='"+resourceid+"' ";
             string sql2 = " select * from  ts_store_component_detail where COMPONENT_ID='" + resourceid + "' ";
             d.Add("dtCom", sql);
             d.Add("dtComDetail", sql2);
@@ -128,13 +136,23 @@ namespace STORE.ODS
         public DataSet getServerDetail(string userid, string projectid, string resourceid)
         {
             Dictionary<string, string> d = new Dictionary<string, string>();
-            string sql = " select a.*,b.CHECK_STATE from ts_store_service a  ";
-            sql += " left join ts_store_application b on a.SERVICE_ID=b.APPLY_RESOURCE_ID ";
-            sql += " where case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
-            sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
-            sql += " and case when b.APPLY_RESOURCE_ID is null or b.APPLY_RESOURCE_ID='' THEN '" + resourceid + "' else b.APPLY_RESOURCE_ID end = '" + resourceid + "' ";
+            string sql = " select a.*  ";
 
-            sql += " order by CHECK_DATE,APPLY_DATE desc ";
+            if (userid != null && userid != "")
+            {
+                sql += " ,(select b.CHECK_STATE  from ts_store_application b   ";
+                sql += " where a.SERVICE_ID=b.APPLY_RESOURCE_ID  ";
+                sql += " and (b.APPLY_EXPIRET>'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' or b.APPLY_EXPIRET is null or b.APPLY_EXPIRET='') ";
+                sql += " and case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
+                sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
+                sql += " ) CHECK_STATE ";//按照有效期判断审核状态 登录后调用
+            }
+            else
+            {
+                sql += " ,-1 CHECK_STATE";
+            }
+
+            sql += "  from ts_store_service a  where a.SERVICE_ID='" + resourceid + "' ";
             string sql2 = " select * from  ts_store_service_detail where SERVICE_ID='" + resourceid + "' ";
             d.Add("dtServer", sql);
             d.Add("dtServerDetail", sql2);
