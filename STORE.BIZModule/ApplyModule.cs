@@ -341,7 +341,11 @@ namespace STORE.BIZModule
                         mod.MANAGE_TEL = dtSer.Rows[0]["MANAGE_TEL"] == null ? "" : dtSer.Rows[0]["MANAGE_TEL"].ToString();
                         mod.MANAGE_ROLE_ID = dtSer.Rows[0]["MANAGE_ROLE_ID"] == null ? "" : dtSer.Rows[0]["MANAGE_ROLE_ID"].ToString();
                         mod.SERVICE_URL = dtSer.Rows[0]["SERVICE_URL"] == null ? "" : dtSer.Rows[0]["SERVICE_URL"].ToString();
-                        mod.SUIT_PLAT = dtSer.Rows[0]["SUIT_PLAT"] == null ? "" : dtSer.Rows[0]["SUIT_PLAT"].ToString();
+                        if (dtSer.Rows[0]["SERVICE_CODE2"] !=null && dtSer.Rows[0]["SERVICE_CODE2"].ToString()!="")
+                        {
+                            mod.SERVICE_URL = dtSer.Rows[0]["SERVICE_CODE2"].ToString();
+                        }
+                        mod.ORIGINAL_URL = dtSer.Rows[0]["ORIGINAL_URL"] == null ? "" : dtSer.Rows[0]["ORIGINAL_URL"].ToString();
                         //mod.IS_DELETE = dtSer.Rows[0]["IS_DELETE"] == null ? 0 : int.Parse(dtSer.Rows[0]["IS_DELETE"].ToString());
                         mod.CREATER = dtSer.Rows[0]["CREATER"] == null ? "" : dtSer.Rows[0]["CREATER"].ToString();
                         if (dtSer.Rows[0]["CREATE_DATE"] == null || dtSer.Rows[0]["CREATE_DATE"].ToString() == "")
@@ -363,6 +367,9 @@ namespace STORE.BIZModule
                         {
                             mod.CHECK_STATE = Convert.ToInt32(dtSer.Rows[0]["CHECK_STATE"].ToString());
                         }
+                        mod.SERVICE_PUBLISHDATE = Convert.ToDateTime(dtSer.Rows[0]["SERVICE_PUBLISHDATE"].ToString());
+                        mod.REQUEST_METHOD = dtSer.Rows[0]["REQUEST_METHOD"] == null ? "" : dtSer.Rows[0]["REQUEST_METHOD"].ToString();
+                        mod.DATA_FORMAT = dtSer.Rows[0]["DATA_FORMAT"] == null ? "" : dtSer.Rows[0]["DATA_FORMAT"].ToString();
                         List<ServerDetail> list = new List<ServerDetail>();
                         if (dtSerDetail != null && dtSerDetail.Rows.Count > 0)
                         {

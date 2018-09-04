@@ -4,7 +4,7 @@ using System.Text;
 
 namespace STORE.BIZModule
 {
-   public class ServerMoudle
+    public class ServerMoudle
     {
         public string SERVICE_ID { get; set; }
         public string SERVICE_CODE { get; set; }
@@ -15,12 +15,13 @@ namespace STORE.BIZModule
         public string MANAGE_ORG_ID { get; set; }
         public string MANAGE_TEL { get; set; }
         public string MANAGE_ROLE_ID { get; set; }
-        public string SUIT_PLAT { get; set; }
+        public string ORIGINAL_URL { get; set; }
         public string SERVICE_URL { get; set; }
         public string DATA_FORMAT { get; set; }
         public int IS_DELETE { get; set; }
         public string CREATER { get; set; }
         public DateTime CREATE_DATE { get; set; }
+        public DateTime SERVICE_PUBLISHDATE { get; set; }
         public int CHECK_STATE { get; set; }
         public List<ServerDetail> children { get; set; }
     }
