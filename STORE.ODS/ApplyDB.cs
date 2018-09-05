@@ -82,9 +82,14 @@ namespace STORE.ODS
         /// <summary>
         ///组件信息和top
         /// </summary>
-        public DataTable getComponent()
+        public DataTable getComponent(string name)
         {
-            string sql = " select * from ts_store_component  where IS_DELETE=0 ORDER BY  DOWNLOAD_TIMES DESC; ";
+            string sql = " select * from ts_store_component  where IS_DELETE=0  ";
+            if (!string.IsNullOrEmpty(name))
+            {
+                sql += " and COMPONENT_NAME like '%" + name + "%' ";
+            }
+            sql += " ORDER BY  DOWNLOAD_TIMES DESC; ";
             return db.GetDataTable(sql);
         }
         /// <summary>
@@ -121,9 +126,13 @@ namespace STORE.ODS
         /// <summary>
         /// 获取服务信息top
         /// </summary>
-        public DataTable getServer()
+        public DataTable getServer(string name)
         {
-            string sql2 = " select* from ts_store_service  where IS_DELETE=0 ORDER BY  SERVICE_TIMES DESC; ";
+            string sql2 = " select* from ts_store_service  where IS_DELETE=0  ";
+            if (!string.IsNullOrEmpty(name)) {
+                sql2 += " and SERVICE_NAME like '%"+name+"%' ";
+            }
+            sql2 += " ORDER BY  SERVICE_TIMES DESC; ";
             return db.GetDataTable(sql2);
         }
         /// <summary>

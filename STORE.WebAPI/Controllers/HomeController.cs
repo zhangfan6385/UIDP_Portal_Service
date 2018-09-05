@@ -82,11 +82,12 @@ namespace STORE.WebAPI.Controllers
         /// <param name="page"></param>
         /// <returns></returns>
         [HttpGet("fetchComponentList")]
-        public IActionResult fetchComponentList(string limit, string page)
+        public IActionResult fetchComponentList(string limit, string page,string name)
         {
             Dictionary<string, object> d = new Dictionary<string, object>();
             d["limit"] = limit;
             d["page"] = page;
+            d["name"] = name;
             Dictionary<string, object> res = amm.fetchComponentList(d);
             return Json(res);
         }
@@ -109,11 +110,12 @@ namespace STORE.WebAPI.Controllers
         /// <param name="page"></param>
         /// <returns></returns>
         [HttpGet("fetchServerList")]
-        public IActionResult fetchServerList(string limit, string page)
+        public IActionResult fetchServerList(string limit, string page,string name)
         {
             Dictionary<string, object> d = new Dictionary<string, object>();
             d["limit"] = limit;
             d["page"] = page;
+            d["name"] = name;
             Dictionary<string, object> res = amm.fetchServerList(d);
             return Json(res);
         }
