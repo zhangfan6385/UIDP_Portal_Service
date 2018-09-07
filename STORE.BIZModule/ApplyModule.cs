@@ -147,9 +147,10 @@ namespace STORE.BIZModule
             Dictionary<string, object> r = new Dictionary<string, object>();
             int limit = d["limit"] == null ? 100 : int.Parse(d["limit"].ToString());
             int page = d["page"] == null ? 1 : int.Parse(d["page"].ToString());
+            string name = d["name"] == null ? "" : d["name"].ToString();
             try
             {
-                DataTable dt = db.getComponent();
+                DataTable dt = db.getComponent(name);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     r["code"] = 2000;
@@ -280,9 +281,10 @@ namespace STORE.BIZModule
             Dictionary<string, object> r = new Dictionary<string, object>();
             int limit = d["limit"] == null ? 100 : int.Parse(d["limit"].ToString());
             int page = d["page"] == null ? 1 : int.Parse(d["page"].ToString());
+            string name = d["name"] == null ? "" : d["name"].ToString();
             try
             {
-                DataTable dt = db.getServer();
+                DataTable dt = db.getServer(name);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     r["code"] = 2000;
