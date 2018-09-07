@@ -42,7 +42,7 @@ namespace STORE.BIZModule
                             r["noReadCount"] = dtNoRead.Rows[0][0] == null ? 0 : int.Parse(dtNoRead.Rows[0][0].ToString());
                         }
                         r["code"] = 2000;
-                        r["message"] = "";
+                        r["message"] = "success";
                         return r;
                     }
 

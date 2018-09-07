@@ -86,6 +86,7 @@ namespace STORE.ODS
             if (d["POST_TYPE"].ToString()=="1")
             {
                 score = db.ExecutByStringResult("select SCORE from ts_community_score_conf WHERE OPER_TYPE='share'");
+
             }
             else if(d["POST_TYPE"].ToString() == "2")
             {
@@ -99,7 +100,7 @@ namespace STORE.ODS
             
             //string sql = "INSERT INTO ts_community_post(" + col + ",CREATE_DATE,IS_DELETE) VALUES(" + val + ",'"+ DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0)";
             string sql = "INSERT INTO ts_community_post(" + col + ",SEND_DATE,CREATE_DATE,IS_DELETE) VALUES(" + val + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0)";
-            string sql1 = "insert into ts_community_score_detail(USER_ID,SCORE,POSTDATE,) values(" + d["USER_ID"].ToString() + "," + score+"," + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ")";
+            string sql1 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,POST_DATE,USER_OPER) values('"+Guid.NewGuid().ToString() +"','" + d["USER_ID"].ToString() + "'," + score+",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"',"+2+ ")";
             List<string> sqllist = new List<string>();
             sqllist.Add(sql);
             sqllist.Add(sql1);

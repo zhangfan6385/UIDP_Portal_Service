@@ -75,10 +75,10 @@ namespace STORE.UTILITY
 
             totals = list.Count;
             int rowBegin = (pageIndex - 1) * pageSize >= totals ? 0 : (pageIndex - 1) * pageSize;
-            int rowEnd = rowBegin + pageSize - 1 >= totals ? totals : rowBegin + pageSize - 1;
+            int rowEnd = rowBegin + pageSize >= totals ? totals : rowBegin + pageSize;
 
             IList<T> result = new List<T>();
-            for (int i = rowBegin; i < rowEnd; i++)
+            for (int i = rowBegin; i <= rowEnd-1; i++)
             {
                 result.Add(list[i]);
             }
