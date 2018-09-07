@@ -198,7 +198,7 @@ namespace STORE.ODS
             sql += "'";
             //sql += d["TO_UID"] == null ? "" : d["TO_UID"].ToString() + "',";
             //sql += "'";
-            sql += DateTime.Now.ToString("yyyy-MM-dd") + "',";
+            sql += DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + "',";
             sql += d["IS_RIGHT_ANSWER"] == null ? "" : d["IS_RIGHT_ANSWER"].ToString() + ",";
             sql += "";
             sql += d["BONUS_POINTS"] == null ? "0" : d["BONUS_POINTS"].ToString();

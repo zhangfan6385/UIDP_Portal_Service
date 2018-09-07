@@ -74,6 +74,18 @@ namespace STORE.ODS
         /// <param name="d"></param>
         /// <returns></returns>
         public DataTable getApply(Dictionary<string, object> d) {
+            string sql1 = " select APPLY_ID from  ts_store_application where APPLY_USERID='" + d["APPLY_USERID"] + "' ";
+            sql1 += " and PROJECT_ID='" + d["PROJECT_ID"] + "' and APPLY_RESOURCE_ID='" + d["APPLY_RESOURCE_ID"] + "'";
+            sql1 += "and CHECK_STATE=2 ";
+            DataTable app = new DataTable();
+            app = db.GetDataTable(sql1);
+            if (app.Rows.Count >=1)
+            {
+                string sql2= "update ts_store_application SET IS_DELETE=1 where APPLY_USERID='" + d["APPLY_USERID"] + "' ";
+                sql2 += " and PROJECT_ID='" + d["PROJECT_ID"] + "' and APPLY_RESOURCE_ID='" + d["APPLY_RESOURCE_ID"] + "'";
+                sql2 += "and CHECK_STATE=2 ";
+                db.GetDataTable(sql2);
+            }
             string sql = " select * from  ts_store_application where APPLY_USERID='"+ d["APPLY_USERID"]+"' ";
             sql+= " and PROJECT_ID='"+ d["PROJECT_ID"] + "' and APPLY_RESOURCE_ID='"+ d["APPLY_RESOURCE_ID"] + "'";
             sql += " and (CHECK_STATE=0 or (CHECK_STATE=1 and (APPLY_EXPIRET>'"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"' or APPLY_EXPIRET='"+ DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'))) ";
@@ -109,6 +121,7 @@ namespace STORE.ODS
                 sql += " ,(select b.CHECK_STATE  from ts_store_application b   ";
                 sql += " where a.COMPONENT_ID=b.APPLY_RESOURCE_ID  ";
                 sql += " and (b.APPLY_EXPIRET>'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' or b.APPLY_EXPIRET is null or b.APPLY_EXPIRET='') ";
+                sql += "AND (b.CHECK_STATE!=2)";
                 sql += " and case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
                 sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
                 sql += " ) CHECK_STATE ";//按照有效期判断审核状态 登录后调用
@@ -201,7 +214,7 @@ namespace STORE.ODS
             sql += "  from ts_store_platform a  ";
             sql += " where a.IS_DELETE=0 and a.PLAT_TYPE=" + platType;
             sql += " order by a.CREATE_DATE desc ";
-            string sql2 = " select * from  ts_store_platform_detail  ";
+            string sql2 = " select * from  ts_store_platform_detail where IS_DELETE=0";
             d.Add("dtPlat", sql);
             d.Add("dtPlatDetail", sql2);
             return db.GetDataSet(d);

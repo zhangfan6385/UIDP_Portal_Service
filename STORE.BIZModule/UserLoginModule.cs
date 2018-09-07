@@ -262,6 +262,7 @@ namespace STORE.BIZModule
             return db.getUserInfoByName(userCode);
         }
 
+
         public DataTable getLoginByID(string userId)
         {
             return db.getLoginByID(userId);
