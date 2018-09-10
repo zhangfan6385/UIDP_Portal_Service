@@ -45,6 +45,12 @@ namespace STORE.WebAPI
         System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "ExcelModel")),
                 RequestPath = "/ExcelModel"
             });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(
+    System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "UploadFiles/community/pic")),
+                RequestPath = "/UploadFiles/community/pic"
+            });
             #region 解决Ubuntu Nginx 代理不能获取IP问题
             app.UseForwardedHeaders(new ForwardedHeadersOptions
             {

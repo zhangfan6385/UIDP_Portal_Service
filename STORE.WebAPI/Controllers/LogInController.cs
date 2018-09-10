@@ -13,6 +13,8 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.DirectoryServices;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http.Internal;
+
 namespace STORE.WebAPI.Controllers
 {
     [Produces("application/json")]
@@ -31,13 +33,43 @@ namespace STORE.WebAPI.Controllers
                 Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
                 string username = d["username"] == null ? "" : d["username"].ToString();
                 string password = d["password"] == null ? "" : d["password"].ToString();
+                UserLoginModule um = new UserLoginModule();
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
                     return Json(new { code = -1, message = "用户名或密码不能为空！" });
                 }
+                DataTable du = um.getUserType(username);
+                if (du != null&&du.Rows.Count>0)
+                {
+                    DataTable dr = um.getAdminInfoByName(username, password);
+                    if (dr != null && dr.Rows.Count > 0)
+                    {
+                        userId = dr.Rows[0]["CONF_CODE"].ToString();
+                        string accessToken = AccessTokenTool.GetAccessToken(userId);
+                        STORE.UTILITY.AccessTokenTool.DeleteToken(userId);
+                        STORE.UTILITY.AccessTokenTool.InsertToken(userId, accessToken, DateTime.Now.AddHours(1));
+                        DataTable dtProject = um.getProject(userId);
+                        int level = 1;
+                        //if (Extension.GetClientUserIp(Request.HttpContext).ToString() != dt.Rows[0]["USER_IP"].ToString())
+                        //{
+                        //    level = 2;
+                        //}
+                        log.Info(DateTime.Now, userId, userName, Extension.GetClientUserIp(Request.HttpContext), 1, "LogIn", "", level);
+                        return Json(new
+                        {
+                            code = 2000,
+                            message = "超级管理员登录成功！",
+                            token = accessToken,
+                            //userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dr)),
+                            roleLevel = 1
+                        });
+                    }
+                    else{
+                        return Json(new { code = -1, message = "账号或者密码错误！" });
+                    }
+                }
                 else
                 {
-                    UserLoginModule um = new UserLoginModule();
                     DataTable dt = um.getUserInfoByName(username);
                     if (dt == null || dt.Rows.Count == 0)
                     {
@@ -65,7 +97,7 @@ namespace STORE.WebAPI.Controllers
                         token = accessToken,
                         projectInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtProject)),
                         userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
-                        roleLevel = ""
+                        roleLevel = 0
                     });
                 }
             }
@@ -182,5 +214,133 @@ namespace STORE.WebAPI.Controllers
             }
 
         }
+        [HttpPost("uploadCommunityPic")]
+        public IActionResult PostPic([FromForm]IFormCollection formCollection)
+        {
+            string result = "";
+            try
+            {
+                FormFileCollection fileCollection = (FormFileCollection)formCollection.Files;
+                foreach (IFormFile file in fileCollection)
+                {
+                    StreamReader reader = new StreamReader(file.OpenReadStream());
+                    String content = reader.ReadToEnd();
+                    String name = file.FileName;
+                    string suffix = name.Substring(name.LastIndexOf("."), (name.Length - name.LastIndexOf("."))); //扩展名
+                    //double filesize = Math.Round(Convert.ToDouble(file.Length / 1024.00 / 1024.00), 2);
+                    string filepath = @"\\UploadFiles\\community\\pic\\" + Guid.NewGuid().ToString() + suffix;
+                    string filename = System.IO.Directory.GetCurrentDirectory() + filepath;
+                    if (System.IO.File.Exists(filename))
+                    {
+                        System.IO.File.Delete(filename);
+                    }
+                    using (FileStream fs = System.IO.File.Create(filename))
+                    {
+                        // 复制文件
+                        file.CopyTo(fs);
+                        // 清空缓冲区数据
+                        fs.Flush();
+                    }
+
+                    result = filepath;
+                    return Json(result);
+                }
+            }
+            catch (Exception)
+            {
+                return Json(result);
+
+            }
+
+            return Json(result);
+        }
+
+        //public IActionResult loginByUsernames([FromBody]JObject value)
+        //{
+        //    string userId = "";
+        //    string userName = "";
+        //    try
+        //    {
+        //        Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+        //        string username = d["username"] == null ? "" : d["username"].ToString();
+        //        string password = d["password"] == null ? "" : d["password"].ToString();
+        //        UserLoginModule um = new UserLoginModule();
+        //        if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+        //        {
+        //            return Json(new { code = -1, message = "用户名或密码不能为空！" });
+        //        }
+        //        else if (username == "admin")
+        //        {
+        //            DataTable dt = um.getAdminInfoByName(username, password);
+        //            if (dt == null || dt.Rows.Count == 0)
+        //            {
+        //                return Json(new { code = -1, message = "账号或者密码错误！" });
+        //            }
+        //            else
+        //            {
+        //                userId = dt.Rows[0]["CONF_CODE"].ToString();
+        //                string accessToken = AccessTokenTool.GetAccessToken(userId);
+        //                STORE.UTILITY.AccessTokenTool.DeleteToken(userId);
+        //                STORE.UTILITY.AccessTokenTool.InsertToken(userId, accessToken, DateTime.Now.AddHours(1));
+        //                DataTable dtProject = um.getProject(userId);
+        //                int level = 1;
+        //                //if (Extension.GetClientUserIp(Request.HttpContext).ToString() != dt.Rows[0]["USER_IP"].ToString())
+        //                //{
+        //                //    level = 2;
+        //                //}
+        //                log.Info(DateTime.Now, userId, userName, Extension.GetClientUserIp(Request.HttpContext), 1, "LogIn", "", level);
+        //                return Json(new
+        //                {
+        //                    code = 2000,
+        //                    message = "",
+        //                    token = accessToken,
+
+        //                    userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
+        //                    roleLevel = "1"
+        //                });
+        //            }
+        //        }
+        //        else
+        //        {
+        //            DataTable dt = um.getUserInfoByName(username);
+        //            if (dt == null || dt.Rows.Count == 0)
+        //            {
+        //                return Json(new { code = -1, message = "此用户不存在！" });
+        //            }
+        //            if (password != dt.Rows[0]["USER_PASS"].ToString())
+        //            {
+        //                return Json(new { code = -1, message = "密码错误！" });
+        //            }
+        //            userId = dt.Rows[0]["USER_ID"].ToString();
+        //            string accessToken = AccessTokenTool.GetAccessToken(userId);
+        //            STORE.UTILITY.AccessTokenTool.DeleteToken(userId);
+        //            STORE.UTILITY.AccessTokenTool.InsertToken(userId, accessToken, DateTime.Now.AddHours(1));
+        //            DataTable dtProject = um.getProject(userId);
+        //            int level = 1;
+        //            //if (Extension.GetClientUserIp(Request.HttpContext).ToString() != dt.Rows[0]["USER_IP"].ToString())
+        //            //{
+        //            //    level = 2;
+        //            //}
+        //            log.Info(DateTime.Now, userId, userName, Extension.GetClientUserIp(Request.HttpContext), 1, "LogIn", "", level);
+        //            return Json(new
+        //            {
+        //                code = 2000,
+        //                message = "",
+        //                token = accessToken,
+        //                projectInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtProject)),
+        //                userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
+        //                roleLevel = "0"
+        //            });
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        log.Info(DateTime.Now, userId, userName, Extension.GetClientUserIp(Request.HttpContext), 1, "LogIn", ex.Message.Length > 120 ? ex.Message.Substring(0, 100) : ex.Message, 1);
+        //        return Json(new { code = -1, message = "登录时程序发生错误" + ex.Message });
+
+        //    }
+
+        //}
     }
+
 }
