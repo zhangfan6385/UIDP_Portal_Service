@@ -265,17 +265,26 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                string b = mm.deleteCommit(d);
-                if (b == "")
+                if (d["USER_ID"].ToString() == "超级管理员")
                 {
-                    r["message"] = "成功";
-                    r["code"] = 2000;
+                    string b = mm.deleteCommit(d);
+                    if (b == "")
+                    {
+                        r["message"] = "成功";
+                        r["code"] = 2000;
+                    }
+                    else
+                    {
+                        r["code"] = -1;
+                        r["message"] = b;
+                    }
                 }
                 else
                 {
                     r["code"] = -1;
-                    r["message"] = b;
+                    r["message"] = "权限不足，无法操作!";
                 }
+                
             }
             catch (Exception e)
             {
@@ -296,17 +305,26 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                string b = mm.deletePost(d);
-                if (b == "")
+                if (d["USER_ID"].ToString() == "超级管理员")
                 {
-                    r["message"] = "成功";
-                    r["code"] = 2000;
+                    string b = mm.deletePost(d);
+                    if (b == "")
+                    {
+                        r["message"] = "成功";
+                        r["code"] = 2000;
+                    }
+                    else
+                    {
+                        r["message"] = "b";
+                        r["code"] = -1;
+                    }
                 }
                 else
                 {
-                    r["message"] = "b";
                     r["code"] = -1;
+                    r["message"] = "权限不足，无法操作!";
                 }
+                
             }
             catch(Exception e)
             {
