@@ -62,6 +62,7 @@ namespace STORE.ODS
             string col = "";
             string val = "";
             string score = "";
+            List<string> sqllist = new List<string>();
             foreach (var v in d)
             {
                 if (v.Value != null)
@@ -96,15 +97,25 @@ namespace STORE.ODS
             {
                 score = db.ExecutByStringResult("select SCORE from ts_community_score_conf WHERE OPER_TYPE='feedback'");
             }
+            string sql1 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,POST_DATE,USER_OPER) values('" + Guid.NewGuid().ToString() + "','" + d["USER_ID"].ToString() + "'," + score + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," + score + ")";//发帖积分明细
+            string sql = "INSERT INTO ts_community_post(" + col + ",SEND_DATE,CREATE_DATE,IS_DELETE) VALUES(" + val + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0)";
+            if (score != "0")
+            {
+                sqllist.Add(sql);
+                sqllist.Add(sql1);
+                return db.Executs(sqllist);
+            }
+            else
+            {
+                sqllist.Add(sql1);
+                return db.Executs(sqllist);
 
+            }
             
             //string sql = "INSERT INTO ts_community_post(" + col + ",CREATE_DATE,IS_DELETE) VALUES(" + val + ",'"+ DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0)";
-            string sql = "INSERT INTO ts_community_post(" + col + ",SEND_DATE,CREATE_DATE,IS_DELETE) VALUES(" + val + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0)";
-            string sql1 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,POST_DATE,USER_OPER) values('"+Guid.NewGuid().ToString() +"','" + d["USER_ID"].ToString() + "'," + score+",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"',"+2+ ")";
-            List<string> sqllist = new List<string>();
-            sqllist.Add(sql);
-            sqllist.Add(sql1);
-            return db.Executs(sqllist);
+           
+            
+
             //return db.ExecutByStringResult(sql);
         }
         public string GetIsNullStr(object obj)
@@ -185,6 +196,8 @@ namespace STORE.ODS
         /// <returns></returns>
         public string addComment(Dictionary<string, object> d)
         {
+            string score = "";
+            List<string> sqllist = new List<string>();
             string sql = " insert into ts_community_comment (COMMENT_ID,POST_ID,CONTENT," +
                 "FROM_UID,CREATE_DATE,IS_RIGHT_ANSWER,BONUS_POINTS) values(";
             sql += "'";
@@ -203,8 +216,18 @@ namespace STORE.ODS
             sql += "";
             sql += d["BONUS_POINTS"] == null ? "0" : d["BONUS_POINTS"].ToString();
             sql += ")";
-            return db.ExecutByStringResult(sql);
-
+            score = db.ExecutByStringResult("select SCORE from ts_community_score_conf WHERE OPER_TYPE='comment'");
+            string sql1 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,POST_DATE,USER_OPER) values('" + Guid.NewGuid().ToString() + "','" + d["USER_ID"].ToString() + "'," + score + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "'," + score + ")";//发帖积分明细
+            if (score != "0")
+            {
+                sqllist.Add(sql1);
+                sqllist.Add(sql);
+                return db.Executs(sqllist);
+            }
+            else
+            {
+                return db.ExecutByStringResult(sql);
+            }
         }
         /// <summary>
         /// 帖子浏览量+1
