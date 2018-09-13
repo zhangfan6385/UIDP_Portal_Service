@@ -60,17 +60,20 @@ namespace STORE.WebAPI.Controllers
                 {
                     r["message"] = "成功";
                     r["code"] = 2000;
+                    r["score"] = mm.getScore(d["USER_ID"].ToString());
                 }
                 else
                 {
                     r["code"] = -1;
                     r["message"] = b;
+                    r["score"] = 0;
                 }
             }
             catch (Exception e)
             {
                 r["code"] = -1;
                 r["message"] = e.Message;
+                r["score"] = 0;
             }
             return Json(r);
         }
@@ -156,17 +159,20 @@ namespace STORE.WebAPI.Controllers
                 {
                     r["message"] = "成功";
                     r["code"] = 2000;
+                    r["score"] = mm.getScore(d["FROM_UID"].ToString());
                 }
                 else
                 {
                     r["code"] = -1;
                     r["message"] = b;
+                    r["score"] = 0;
                 }
             }
             catch (Exception e)
             {
                 r["code"] = -1;
                 r["message"] = e.Message;
+                r["score"] = 0;
             }
             return Json(r);
         }
@@ -241,6 +247,7 @@ namespace STORE.WebAPI.Controllers
         {
             return Json(mm.getTopPost());
         }
+
         /// <summary>
         /// 查询帖子详情
         /// </summary>
@@ -333,5 +340,94 @@ namespace STORE.WebAPI.Controllers
             }
             return Json(r);
         }
+
+
+        /// <summary>
+        /// 查询经验分享权限
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost("getSharePower")]
+        public IActionResult getSharePower([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            string res = mm.getSharePower(d);
+            return Content(res);
+        }
+        /// <summary>
+        /// 支付经验分享
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        [HttpPost("payShare")]
+        public IActionResult payShare([FromBody]JObject value)
+        {
+            Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                string b = mm.payShare(d);
+                if (b == "")
+                {
+                    r["message"] = "成功";
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = -1;
+                    r["message"] = b;
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return Json(r);
+        }
+
+        /// <summary>
+        /// 结帖
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("endPost")]
+        public IActionResult endPost([FromBody]JObject value)
+        {
+            PostModel pm = value.ToObject<PostModel>();
+            string postId=pm.POST_ID;
+            string scorePoint = pm.SCORE_POINT.ToString();
+            string userId = pm.USER_ID.ToString();
+            List<Dictionary<string, object>> f = new List<Dictionary<string, object>>();
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                foreach (var item in pm.children)
+                {
+                    Dictionary<string, object> d = new Dictionary<string, object>();
+                    d["FROM_UID"] = item.FROM_UID;
+                    d["BONUS_POINTS"] = item.BONUS_POINTS;
+                    d["COMMENT_ID"] = item.COMMENT_ID;
+                    f.Add(d);
+                }
+                string b = mm.endPost(postId,scorePoint, userId, f);
+                if (b == "")
+                {
+                    r["message"] = "成功";
+                    r["code"] = 2000;
+                }
+                else
+                {
+                    r["code"] = -1;
+                    r["message"] = b;
+                }
+            }
+            catch (Exception e)
+            {
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return Json(r);
+        }
+
     }
 }

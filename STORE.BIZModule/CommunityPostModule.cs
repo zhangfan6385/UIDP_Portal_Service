@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace STORE.BIZModule
 {
-   public class CommunityPostModule
+    public class CommunityPostModule
     {
         CommunityPostDB db = new CommunityPostDB();
         /// <summary>
@@ -96,7 +96,8 @@ namespace STORE.BIZModule
         /// </summary>
         /// <returns></returns>
 
-        public Dictionary<string, object> getTopPost() {
+        public Dictionary<string, object> getTopPost()
+        {
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
@@ -126,7 +127,7 @@ namespace STORE.BIZModule
             {
                 r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(new DataTable()));
                 r["code"] = -1;
-                r["message"] =  e.Message;
+                r["message"] = e.Message;
             }
             return r;
         }
@@ -149,7 +150,7 @@ namespace STORE.BIZModule
                 {
                     d["USER_ID"] = " ";
                 };
-                DataSet ds = db.getPostByID(d["POST_ID"].ToString(),d["USER_ID"].ToString());
+                DataSet ds = db.getPostByID(d["POST_ID"].ToString(), d["USER_ID"].ToString());
                 PostModel postModel = new PostModel();
                 if (ds != null && ds.Tables.Count > 0)
                 {
@@ -171,7 +172,7 @@ namespace STORE.BIZModule
                             postModel.TITLE_NAME = dr["TITLE_NAME"] == null ? "" : dr["TITLE_NAME"].ToString();
                             postModel.POST_TYPE = Convert.ToInt32(dr["POST_TYPE"].ToString());
                             postModel.POST_CONTENT = dr["POST_CONTENT"].ToString();
-                            postModel.SCORE_POINT =Convert.ToDouble(dr["SCORE_POINT"].ToString());
+                            postModel.SCORE_POINT = Convert.ToDouble(dr["SCORE_POINT"].ToString());
                             postModel.BROWSE_NUM = Convert.ToInt32(dr["BROWSE_NUM"].ToString()); ;
                             //postModel.COLLECTION_ID = dr["COLLECTION_ID"] == null ? " ": dr["COLLECTION_ID"].ToString();
                             postModel.SEND_DATE = dr["SEND_DATE"] == null ? DateTime.Now : DateTime.Parse(dr["SEND_DATE"].ToString());
@@ -181,9 +182,9 @@ namespace STORE.BIZModule
                                 //DataRow[] arry = dtDetail.Select("NOTICE_ID='" + dr["NOTICE_ID"].ToString() + "'");
                                 listdetail.Clear();
 
-                                    foreach (DataRow item in dtDetail.Rows)
-                                    {
-                                        PostComment postComment = new PostComment();
+                                foreach (DataRow item in dtDetail.Rows)
+                                {
+                                    PostComment postComment = new PostComment();
                                     postComment.COMMENT_ID = item["COMMENT_ID"].ToString();
                                     postComment.POST_ID = item["POST_ID"].ToString();
                                     postComment.CONTENT = item["CONTENT"].ToString();
@@ -192,12 +193,12 @@ namespace STORE.BIZModule
                                     //postComment.IS_RIGHT_ANSWER= Convert.ToInt32(dr["IS_RIGHT_ANSWER"].ToString());
                                     //postComment.BONUS_POINTS= Convert.ToDouble(dr["BONUS_POINTS"].ToString());
                                     postComment.CREATE_DATE = item["CREATE_DATE"] == null ? DateTime.Now : DateTime.Parse(item["CREATE_DATE"].ToString());
-                                        listdetail.Add(postComment);
-                                    }
+                                    listdetail.Add(postComment);
+                                }
                             }
-                            if (dtCollection.Rows.Count==0)
+                            if (dtCollection.Rows.Count == 0)
                             {
-                                postModel.COLLECTION_STATE ="0";
+                                postModel.COLLECTION_STATE = "0";
                             }
                             else
                             {
@@ -231,10 +232,47 @@ namespace STORE.BIZModule
         {
             return db.delCommentByID(d);
         }
-        
-        public string deletePost(Dictionary<string,object> d)
+
+        public string deletePost(Dictionary<string, object> d)
         {
             return db.delPostByID(d);
         }
+
+        public string getSharePower(Dictionary<string, object> d)
+        {
+            string result = "error";
+            try
+            {
+                DataTable dt = db.getSharePower(d["POST_ID"].ToString(), d["USER_ID"].ToString());
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    result = "1";
+                }
+                else
+                {
+                    result = "0";
+                }
+            }
+            catch (Exception)
+            {
+                result = "error";
+            }
+
+            return result;
+        }
+        public string payShare(Dictionary<string, object> d)
+        {
+            return db.payShare(d["POST_ID"].ToString(), d["POST_USER_ID"].ToString(), d["USER_ID"].ToString(), d["SCORE"].ToString());
+        }
+
+        public string endPost(string postId, string scorePoint, string userId,List<Dictionary<string, object>> f)
+        {
+            return db.endPost(postId, scorePoint, userId, f);
+        }
+        public string getScore(string userId)
+        {
+            return db.getScore(userId);
+        }
+       
     }
 }

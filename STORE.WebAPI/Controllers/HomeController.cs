@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -153,5 +155,50 @@ namespace STORE.WebAPI.Controllers
             return Json(res);
         }
 
+        /// <summary>
+        /// 上传图片
+        /// </summary>
+        /// <param name="formCollection"></param>
+        /// <returns></returns>
+        [HttpPost("uploadCommunityPic")]
+        public IActionResult PostPic([FromForm]IFormCollection formCollection)
+        {
+            string result = "";
+            try
+            {
+                FormFileCollection fileCollection = (FormFileCollection)formCollection.Files;
+                foreach (IFormFile file in fileCollection)
+                {
+                    StreamReader reader = new StreamReader(file.OpenReadStream());
+                    String content = reader.ReadToEnd();
+                    String name = file.FileName;
+                    string suffix = name.Substring(name.LastIndexOf("."), (name.Length - name.LastIndexOf("."))); //扩展名
+                    //double filesize = Math.Round(Convert.ToDouble(file.Length / 1024.00 / 1024.00), 2);
+                    string filepath = @"\\UploadFiles\\community\\pic\\" + Guid.NewGuid().ToString() + suffix;
+                    string filename = System.IO.Directory.GetCurrentDirectory() + filepath;
+                    if (System.IO.File.Exists(filename))
+                    {
+                        System.IO.File.Delete(filename);
+                    }
+                    using (FileStream fs = System.IO.File.Create(filename))
+                    {
+                        // 复制文件
+                        file.CopyTo(fs);
+                        // 清空缓冲区数据
+                        fs.Flush();
+                    }
+
+                    result = filepath;
+                    return Json(result);
+                }
+            }
+            catch (Exception)
+            {
+                return Json(result);
+
+            }
+
+            return Json(result);
+        }
     }
 }
