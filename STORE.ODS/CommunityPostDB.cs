@@ -325,12 +325,16 @@ namespace STORE.ODS
 
         public string payShare(string postId, string postUserId, string userId, string score)
         {
-            string sql1 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,USER_OPER,POST_DATE,SOURCE_ID) values('" + Guid.NewGuid().ToString() + "','" + userId + "',-" + score + ",'costshare','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ",'" + postId + "')";
-            string sql2 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,USER_OPER,POST_DATE,SOURCE_ID) values('" + Guid.NewGuid().ToString() + "','" + postUserId + "'," + score + ",'supply','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ",'" + postId + "')";
+            string sql1 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,USER_OPER,POST_DATE,SOURCE_ID) values('" + Guid.NewGuid().ToString() + "','" + userId + "',-" + score + ",'costshare','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + postId + "')";
+            string sql2 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,USER_OPER,POST_DATE,SOURCE_ID) values('" + Guid.NewGuid().ToString() + "','" + postUserId + "'," + score + ",'supply','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + postId + "')";
+            string sql3 = "update ts_uidp_userinfo set SCORE=SCORE+" + Convert.ToDouble(score) + " where USER_ID='" + postUserId + "'";
+            string sql4 = "update ts_uidp_userinfo set SCORE=SCORE-" + Convert.ToDouble(score) + " where USER_ID='" + userId + "'";
             //return db.ExecutByStringResult(sql);
             List<string> sql = new List<string>();
             sql.Add(sql1);
             sql.Add(sql2);
+            sql.Add(sql3);
+            sql.Add(sql4);
             return db.Executs(sql);
         }
         public string getString(object obj)
