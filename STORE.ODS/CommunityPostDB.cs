@@ -101,7 +101,7 @@ namespace STORE.ODS
                 score = db.GetString("select SCORE from ts_community_score_conf WHERE OPER_TYPE='help'");
                 type = "help";
             }
-            string sql = "INSERT INTO ts_community_post(" + col + ",SEND_DATE,CREATE_DATE,IS_DELETE) VALUES(" + val + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0)";
+            string sql = "INSERT INTO ts_community_post(" + col + ",SEND_DATE,CREATE_DATE,IS_DELETE,POST_STATUS,BROWSE_NUM) VALUES(" + val + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "',0,0,0)";
             string sql1 = "insert into ts_community_score_detail(SCORE_DETAIL_ID,USER_ID,SCORE,POST_DATE,USER_OPER,SOURCE_ID) values('" + Guid.NewGuid().ToString() + "','" + d["USER_ID"].ToString() + "'," + score + ",'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "','" + type + "','" + d["POST_ID"].ToString() + "')";//发帖积分明细
             string sql2 = "update ts_uidp_userinfo set SCORE=SCORE+" + Convert.ToDouble(score) + "-" + Convert.ToDouble(d["SCORE_POINT"].ToString()) + " where USER_ID='" + d["USER_ID"].ToString() + "'";
             if (Convert.ToDouble(d["SCORE_POINT"].ToString()) > 0&& d["POST_TYPE"].ToString() == "3")
