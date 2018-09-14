@@ -173,7 +173,8 @@ namespace STORE.BIZModule
                             postModel.POST_TYPE = Convert.ToInt32(dr["POST_TYPE"].ToString());
                             postModel.POST_CONTENT = dr["POST_CONTENT"].ToString();
                             postModel.SCORE_POINT = Convert.ToDouble(dr["SCORE_POINT"].ToString());
-                            postModel.BROWSE_NUM = Convert.ToInt32(dr["BROWSE_NUM"].ToString()); ;
+                            postModel.BROWSE_NUM = Convert.ToInt32(dr["BROWSE_NUM"].ToString());
+                            postModel.POST_STATUS = Convert.ToInt32(dr["POST_STATUS"].ToString());
                             //postModel.COLLECTION_ID = dr["COLLECTION_ID"] == null ? " ": dr["COLLECTION_ID"].ToString();
                             postModel.SEND_DATE = dr["SEND_DATE"] == null ? DateTime.Now : DateTime.Parse(dr["SEND_DATE"].ToString());
                             List<PostComment> listdetail = new List<PostComment>();

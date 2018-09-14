@@ -30,6 +30,7 @@ namespace STORE.BIZModule
         public int BROWSE_NUM { get; set; }
         public double SCORE_POINT { get; set; }
         public string COLLECTION_STATE { get; set; }
+        public int POST_STATUS { get; set; }
         public List<PostComment> children { get; set; }
     }
 }
