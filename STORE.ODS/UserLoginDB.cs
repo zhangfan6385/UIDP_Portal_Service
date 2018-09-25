@@ -267,6 +267,18 @@ JOIN ts_uidp_org c ON c.ORG_ID = b.ORG_ID where a.USER_DOMAIN='{0}' AND C.ORG_CO
             throw new Exception("用户名不能为空！");
 
         }
+        public DataTable getTokenByName(string userCode)
+        {
+            if (!string.IsNullOrEmpty(userCode))
+            {
+                string sql = "select * from ts_uidp_accesstoken where USER_ID='" + userCode + "'";
+                return db.GetDataTable(sql);
+            }
+            else
+            {
+                throw new Exception("用户名不能为空！");
+            }
+        }
         public DataTable getProject(string userid) {
             string sql = "select a.* from ts_store_project a ";
             sql += " join ts_uidp_org b on b.ORG_ID=a.PROJECT_PARTYB_ID ";

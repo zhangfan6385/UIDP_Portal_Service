@@ -36,7 +36,7 @@ namespace STORE.WebAPI.Controllers
                     }
                     string userId = STORE.UTILITY.AccessTokenTool.GetUserId(AccessToken);
                     UserId = userId;
-                    if (actionName == "info")
+                    if (actionName == "login")
                     {
                         STORE.UTILITY.Message mes = STORE.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken, "user");
                         if (mes.code != 2000)
@@ -56,7 +56,8 @@ namespace STORE.WebAPI.Controllers
                         {
                             UserName = mm.getUserInfoByUserId(userId).USER_NAME;
                         }
-                        STORE.UTILITY.Message mes = STORE.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken, admin);
+                        STORE.UTILITY.Message mes = STORE.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken, "user");
+                        mes = STORE.UTILITY.AccessTokenTool.IsInValidUser(userId, AccessToken, admin);
                         if (mes.code != 2000)
                         {
                             context.Result = new ObjectResult(mes);

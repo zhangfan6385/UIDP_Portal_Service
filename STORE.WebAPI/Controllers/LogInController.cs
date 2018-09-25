@@ -41,7 +41,7 @@ namespace STORE.WebAPI.Controllers
                 DataTable du = um.getUserType(username);
                 if (du != null&&du.Rows.Count>0)
                 {
-                    DataTable dr = um.getAdminInfoByName(username, password);
+                    DataTable dr = um.getAdminInfoByName(username, password);//获取用户是否存在
                     if (dr != null && dr.Rows.Count > 0)
                     {
                         userId = dr.Rows[0]["CONF_CODE"].ToString();
@@ -75,30 +75,58 @@ namespace STORE.WebAPI.Controllers
                     {
                         return Json(new { code = -1, message = "此用户不存在！" });
                     }
-                    if (password != dt.Rows[0]["USER_PASS"].ToString())
+                    else if (password != dt.Rows[0]["USER_PASS"].ToString())
                     {
                         return Json(new { code = -1, message = "密码错误！" });
                     }
-                    userId = dt.Rows[0]["USER_ID"].ToString();
-                    string accessToken = AccessTokenTool.GetAccessToken(userId);
-                    STORE.UTILITY.AccessTokenTool.DeleteToken(userId);
-                    STORE.UTILITY.AccessTokenTool.InsertToken(userId, accessToken, DateTime.Now.AddHours(1));
-                    DataTable dtProject = um.getProject(userId);
-                    int level = 1;
-                    //if (Extension.GetClientUserIp(Request.HttpContext).ToString() != dt.Rows[0]["USER_IP"].ToString())
-                    //{
-                    //    level = 2;
-                    //}
-                    log.Info(DateTime.Now, userId, userName, Extension.GetClientUserIp(Request.HttpContext),1, "LogIn", "", level);
-                    return Json(new
+                    else
                     {
-                        code = 2000,
-                        message = "",
-                        token = accessToken,
-                        projectInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtProject)),
-                        userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
-                        roleLevel = 0
-                    });
+                        DataTable dc = um.getAdminTokenByName(dt.Rows[0]["USER_ID"].ToString());//获取用户Token是否存在
+                        if (dc == null || dc.Rows.Count < 1)
+                        {
+                            userId = dt.Rows[0]["USER_ID"].ToString();
+                            string accessToken = AccessTokenTool.GetAccessToken(userId);
+                            STORE.UTILITY.AccessTokenTool.DeleteToken(userId);
+                            STORE.UTILITY.AccessTokenTool.InsertToken(userId, accessToken, DateTime.Now.AddHours(1));
+                            DataTable dtProject = um.getProject(userId);
+                            int level = 1;
+                            //if (Extension.GetClientUserIp(Request.HttpContext).ToString() != dt.Rows[0]["USER_IP"].ToString())
+                            //{
+                            //    level = 2;
+                            //}
+                            log.Info(DateTime.Now, userId, userName, Extension.GetClientUserIp(Request.HttpContext), 1, "LogIn", "", level);
+                            return Json(new
+                            {
+                                code = 2000,
+                                message = "",
+                                token = accessToken,
+                                projectInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtProject)),
+                                userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
+                                roleLevel = 0
+                            });
+                        }
+                        else
+                        {
+                            userId = dt.Rows[0]["USER_ID"].ToString();
+                            string accessToken = dc.Rows[0]["ACCESS_TOKEN"].ToString();
+                            DataTable dtProject = um.getProject(userId);
+                            int level = 1;
+                            //if (Extension.GetClientUserIp(Request.HttpContext).ToString() != dt.Rows[0]["USER_IP"].ToString())
+                            //{
+                            //    level = 2;
+                            //}
+                            log.Info(DateTime.Now, userId, userName, Extension.GetClientUserIp(Request.HttpContext), 1, "LogIn", "", level);
+                            return Json(new
+                            {
+                                code = 2000,
+                                message = "",
+                                token = accessToken,
+                                projectInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtProject)),
+                                userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
+                                roleLevel = 0
+                            });
+                        }
+                    }
                 }
             }
             catch (Exception ex)

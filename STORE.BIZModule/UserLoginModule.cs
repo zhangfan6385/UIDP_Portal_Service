@@ -265,6 +265,10 @@ namespace STORE.BIZModule
         {
             return db.getAdminInfoByName(userCode,password);
         }
+        public DataTable getAdminTokenByName(string userCode)
+        {
+            return db.getTokenByName(userCode);
+        }
         public DataTable getUserType(string userCode)
         {
             return db.getUserType(userCode);
