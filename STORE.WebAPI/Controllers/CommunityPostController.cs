@@ -272,8 +272,8 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                if (d["USER_ID"].ToString() == "超级管理员")
-                {
+                //if (d["USER_ID"].ToString() == "超级管理员")
+                //{
                     string b = mm.deleteCommit(d);
                     if (b == "")
                     {
@@ -285,12 +285,12 @@ namespace STORE.WebAPI.Controllers
                         r["code"] = -1;
                         r["message"] = b;
                     }
-                }
-                else
-                {
-                    r["code"] = -1;
-                    r["message"] = "权限不足，无法操作!";
-                }
+                //}
+                //else
+                //{
+                //    r["code"] = -1;
+                //    r["message"] = "权限不足，无法操作!";
+                //}
                 
             }
             catch (Exception e)
@@ -312,8 +312,8 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> r = new Dictionary<string, object>();
             try
             {
-                if (d["USER_ID"].ToString() == "超级管理员")
-                {
+                //if (d["USER_ID"].ToString() == "超级管理员")
+                //{
                     string b = mm.deletePost(d);
                     if (b == "")
                     {
@@ -325,12 +325,12 @@ namespace STORE.WebAPI.Controllers
                         r["message"] = "b";
                         r["code"] = -1;
                     }
-                }
-                else
-                {
-                    r["code"] = -1;
-                    r["message"] = "权限不足，无法操作!";
-                }
+                //}
+                //else
+                //{
+                //    r["code"] = -1;
+                //    r["message"] = "权限不足，无法操作!";
+                //}
                 
             }
             catch(Exception e)

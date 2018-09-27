@@ -241,7 +241,7 @@ where USER_ID = '{0}'
             {
                 string sql = String.Format(@"select a.*,c.ORG_ID,c.ORG_NAME from ts_uidp_userinfo a 
 join ts_uidp_org_user b on a.USER_ID = b.USER_ID
-JOIN ts_uidp_org c ON c.ORG_ID = b.ORG_ID where a.USER_DOMAIN='{0}' AND C.ORG_CODE not LIKE '100%' "
+JOIN ts_uidp_org c ON c.ORG_ID = b.ORG_ID where a.USER_DOMAIN='{0}' "
                    , userCode);
                 return db.GetDataTable(sql);
             }

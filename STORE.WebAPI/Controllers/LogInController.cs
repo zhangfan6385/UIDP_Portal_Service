@@ -61,7 +61,7 @@ namespace STORE.WebAPI.Controllers
                             message = "超级管理员登录成功！",
                             token = accessToken,
                             //userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dr)),
-                            roleLevel = 1
+                            roleLevel = 0
                         });
                     }
                     else{
@@ -102,7 +102,7 @@ namespace STORE.WebAPI.Controllers
                                 token = accessToken,
                                 projectInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtProject)),
                                 userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
-                                roleLevel = 0
+                                roleLevel = dt.Rows[0]["USER_TYPE"].ToString()
                             });
                         }
                         else
@@ -123,7 +123,7 @@ namespace STORE.WebAPI.Controllers
                                 token = accessToken,
                                 projectInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dtProject)),
                                 userInfo = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(dt)),
-                                roleLevel = 0
+                                roleLevel = dt.Rows[0]["USER_TYPE"].ToString()
                             });
                         }
                     }
