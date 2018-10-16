@@ -214,6 +214,10 @@ namespace STORE.BIZModule
                         mod.IS_DELETE = dtCom.Rows[0]["IS_DELETE"] == null ? 0 : int.Parse(dtCom.Rows[0]["IS_DELETE"].ToString());
                         mod.CREATER = dtCom.Rows[0]["CREATER"] == null ? "" : dtCom.Rows[0]["CREATER"].ToString();
                         mod.CREATE_DATE = dtCom.Rows[0]["CREATE_DATE"] == null ? DateTime.Now : Convert.ToDateTime(dtCom.Rows[0]["CREATE_DATE"].ToString());
+                        mod.COMPONENT_PUBLISHDATE = dtCom.Rows[0]["COMPONENT_PUBLISHDATE"] == null ?mod.CREATE_DATE : Convert.ToDateTime(dtCom.Rows[0]["CREATE_DATE"].ToString());
+                        mod.COMPONENT_VERSION = dtCom.Rows[0]["COMPONENT_VERSION"] == null ? "" : dtCom.Rows[0]["COMPONENT_VERSION"].ToString();
+                        mod.APPLICATION_BROWSER= dtCom.Rows[0]["APPLICATION_BROWSER"] == null ? "" : dtCom.Rows[0]["APPLICATION_BROWSER"].ToString();
+                        mod.SUIT_PLAT= dtCom.Rows[0]["SUIT_PLAT"] == null ? "" : dtCom.Rows[0]["SUIT_PLAT"].ToString();
                         //mod.CHECK_STATE = dtCom.Rows[0]["CHECK_STATE"] == null ? -1 : Convert.ToInt32(dtCom.Rows[0]["CHECK_STATE"].ToString());
                         if (dtCom.Rows[0]["CHECK_STATE"] == null || dtCom.Rows[0]["CHECK_STATE"].ToString() == "")
                         {
@@ -239,13 +243,13 @@ namespace STORE.BIZModule
                                         detail.CREATER = row["CREATER"] == null ? "" : row["CREATER"].ToString();
                                         detail.CREATE_DATE = row["CREATE_DATE"] == null ? DateTime.Now : Convert.ToDateTime(dtComDetail.Rows[0]["CREATE_DATE"].ToString());
                                         detail.FILE_NAME = row["FILE_NAME"] == null ? "" : row["FILE_NAME"].ToString();
-                                        if (dtComDetail.Rows[0]["FILE_SIZE"] == null || row["FILE_SIZE"].ToString() == "")
+                                        if (row["FILE_SIZE"] == null || row["FILE_SIZE"].ToString() == "")
                                         {
                                             detail.FILE_SIZE ="";
                                         }
                                         else
                                         {
-                                            detail.FILE_SIZE =dtComDetail.Rows[0]["FILE_SIZE"].ToString();
+                                            detail.FILE_SIZE = row["FILE_SIZE"].ToString();
                                         }
                                         detail.FILE_TYPE = row["FILE_TYPE"] == null ? 1 : int.Parse(dtComDetail.Rows[0]["FILE_TYPE"].ToString());
                                         detail.FILE_URL = row["FILE_URL"] == null ? "" : row["FILE_URL"].ToString();
@@ -343,9 +347,13 @@ namespace STORE.BIZModule
                         mod.MANAGE_TEL = dtSer.Rows[0]["MANAGE_TEL"] == null ? "" : dtSer.Rows[0]["MANAGE_TEL"].ToString();
                         mod.MANAGE_ROLE_ID = dtSer.Rows[0]["MANAGE_ROLE_ID"] == null ? "" : dtSer.Rows[0]["MANAGE_ROLE_ID"].ToString();
                         mod.SERVICE_URL = dtSer.Rows[0]["SERVICE_URL"] == null ? "" : dtSer.Rows[0]["SERVICE_URL"].ToString();
-                        if (dtSer.Rows[0]["SERVICE_CODE2"] !=null && dtSer.Rows[0]["SERVICE_CODE2"].ToString()!="")
+                        if (dtSer.Rows[0]["SERVICE_URL"] !=null && dtSer.Rows[0]["SERVICE_URL"].ToString()!="")
                         {
-                            mod.SERVICE_URL = dtSer.Rows[0]["SERVICE_CODE2"].ToString();
+                            mod.SERVICE_URL = dtSer.Rows[0]["SERVICE_URL"].ToString();
+                        }
+                        if (dtSer.Rows[0]["SERVICE_CODE2"] != null && dtSer.Rows[0]["SERVICE_CODE2"].ToString() != "")
+                        {
+                            mod.SERVER_TOKEN = dtSer.Rows[0]["SERVICE_CODE2"].ToString();
                         }
                         mod.ORIGINAL_URL = dtSer.Rows[0]["ORIGINAL_URL"] == null ? "" : dtSer.Rows[0]["ORIGINAL_URL"].ToString();
                         //mod.IS_DELETE = dtSer.Rows[0]["IS_DELETE"] == null ? 0 : int.Parse(dtSer.Rows[0]["IS_DELETE"].ToString());
@@ -372,6 +380,9 @@ namespace STORE.BIZModule
                         mod.SERVICE_PUBLISHDATE = Convert.ToDateTime(dtSer.Rows[0]["SERVICE_PUBLISHDATE"].ToString());
                         mod.REQUEST_METHOD = dtSer.Rows[0]["REQUEST_METHOD"] == null ? "" : dtSer.Rows[0]["REQUEST_METHOD"].ToString();
                         mod.DATA_FORMAT = dtSer.Rows[0]["DATA_FORMAT"] == null ? "" : dtSer.Rows[0]["DATA_FORMAT"].ToString();
+                        mod.SERVER_VERSION= dtSer.Rows[0]["SERVER_VERSION"] == null ? "" : dtSer.Rows[0]["SERVER_VERSION"].ToString();
+                        mod.SERVER_LANGUAGE = dtSer.Rows[0]["SERVER_LANGUAGE"] == null ? "" : dtSer.Rows[0]["SERVER_LANGUAGE"].ToString();
+                        mod.MANAGE_ORG_NAME = dtSer.Rows[0]["MANAGE_ORG_NAME"] == null ? "" : dtSer.Rows[0]["MANAGE_ORG_NAME"].ToString();
                         List<ServerDetail> list = new List<ServerDetail>();
                         if (dtSerDetail != null && dtSerDetail.Rows.Count > 0)
                         {
@@ -393,11 +404,11 @@ namespace STORE.BIZModule
                                 detail.FILE_NAME = row["FILE_NAME"] == null ? "" : row["FILE_NAME"].ToString();
                                 if (row["FILE_SIZE"] == null || row["FILE_SIZE"].ToString() == "")
                                 {
-                                    detail.FILE_SIZE = 0.0;
+                                    detail.FILE_SIZE = "0M";
                                 }
                                 else
                                 {
-                                    detail.FILE_SIZE = double.Parse(row["FILE_SIZE"].ToString());
+                                    detail.FILE_SIZE = row["FILE_SIZE"].ToString();
                                 }
                                 detail.FILE_TYPE = row["FILE_TYPE"] == null ? 1 : int.Parse(row["FILE_TYPE"].ToString());
                                 detail.FILE_URL = row["FILE_URL"] == null ? "" : row["FILE_URL"].ToString();

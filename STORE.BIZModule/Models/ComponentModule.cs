@@ -24,6 +24,8 @@ namespace STORE.BIZModule
         public DateTime CREATE_DATE { get; set; }
         public int CHECK_STATE { get; set; }
         public string URL { get; set; }
+        public DateTime COMPONENT_PUBLISHDATE { get; set; }
+        public string COMPONENT_VERSION { get; set; }
         public List<ComponentDetail> children { get; set; }
     }
     public class ComponentDetail {

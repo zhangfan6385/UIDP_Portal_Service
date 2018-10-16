@@ -23,6 +23,11 @@ namespace STORE.BIZModule
         public DateTime CREATE_DATE { get; set; }
         public DateTime SERVICE_PUBLISHDATE { get; set; }
         public int CHECK_STATE { get; set; }
+        public string SERVER_VERSION { get; set; }
+        public string SERVER_LANGUAGE { get; set; }
+        public string MANAGE_ORG_NAME { get; set; }
+
+        public string SERVER_TOKEN { get; set; }
         public List<ServerDetail> children { get; set; }
     }
     public class ServerDetail {
@@ -31,7 +36,7 @@ namespace STORE.BIZModule
         public string FILE_NAME { get; set; }
         public int FILE_TYPE { get; set; }
         public string FILE_URL { get; set; }
-        public Double FILE_SIZE { get; set; }
+        public string FILE_SIZE { get; set; }
         public string CREATER { get; set; }
         public DateTime CREATE_DATE { get; set; }
     }
