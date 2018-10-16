@@ -567,5 +567,133 @@ namespace STORE.BIZModule
             }
             return r;
         }
+        public Dictionary<string, object> fetchPlatformDetail(string userid,string projectid, string resourceid)
+        {
+            Dictionary<string, object> r = new Dictionary<string, object>();
+            try
+            {
+                DataSet ds = db.getPlatDetail(userid,projectid,resourceid);
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    DataTable dtPlat = ds.Tables["dtPlat"];
+                    DataTable dtPlatDetail = ds.Tables["dtPlatDetail"];
+                    List<PlatformMoudle> modList = new List<PlatformMoudle>();
+
+                    if (dtPlat != null && dtPlat.Rows.Count > 0)
+                    {
+                        foreach (DataRow row in dtPlat.Rows)
+                        {
+                            PlatformMoudle mod = new PlatformMoudle();
+                            mod.PLAT_ID = row["PLAT_ID"] == null ? "" : row["PLAT_ID"].ToString();
+                            mod.PLAT_CODE = row["PLAT_CODE"] == null ? "" : row["PLAT_CODE"].ToString();
+                            mod.PLAT_NAME = row["PLAT_NAME"] == null ? "" : row["PLAT_NAME"].ToString();
+                            mod.PLAT_VERSION = row["PLAT_VERSION"] == null ? "" : row["PLAT_VERSION"].ToString();
+                            if (row["PLAT_PUBLISHDATE"] == null || row["PLAT_PUBLISHDATE"].ToString() == "")
+                            {
+                                mod.PLAT_PUBLISHDATE = DateTime.Now;
+                            }
+                            else
+                            {
+                                mod.PLAT_PUBLISHDATE = DateTime.Parse(row["PLAT_PUBLISHDATE"].ToString());
+                            }
+                            mod.PLAT_SIZE = row["PLAT_SIZE"] == null ? "" : row["PLAT_SIZE"].ToString();
+                            mod.SOFTWARE_LANGUAGE = row["MANAGE_TEL"] == null ? "" : row["MANAGE_TEL"].ToString();
+                            mod.SUIT_PLAT = row["MANAGE_ROLE_ID"] == null ? "" : row["MANAGE_ROLE_ID"].ToString();
+                            mod.PLAT_RUNREQUIRE = row["MANAGE_ROLE_ID"] == null ? "" : row["MANAGE_ROLE_ID"].ToString();
+                            if (row["PLAT_TYPE"] == null || row["PLAT_TYPE"].ToString() == "")
+                            {
+                                mod.PLAT_TYPE = 0;
+                            }
+                            else
+                            {
+                                mod.PLAT_TYPE = int.Parse(row["PLAT_TYPE"].ToString());
+                            }
+
+                            mod.MANAGE_ROLE_ID = row["MANAGE_ROLE_ID"] == null ? "" : row["MANAGE_ROLE_ID"].ToString();
+                            mod.MANAGE_ORG_ID = row["MANAGE_ORG_ID"] == null ? "" : row["MANAGE_ORG_ID"].ToString();
+                            mod.MANAGE_ORG_NAME = row["MANAGE_ORG_NAME"] == null ? "" : row["MANAGE_ORG_NAME"].ToString();
+                            mod.MANAGE_TEL = row["MANAGE_TEL"] == null ? "" : row["MANAGE_TEL"].ToString();
+
+                            mod.APPLICATION_BROWSER = row["APPLICATION_BROWSER"] == null ? "" : row["APPLICATION_BROWSER"].ToString();
+                            mod.SUIT_PLAT = row["SUIT_PLAT"] == null ? "" : row["SUIT_PLAT"].ToString();
+                            mod.IS_DELETE = row["IS_DELETE"] == null ? 0 : int.Parse(row["IS_DELETE"].ToString());
+                            mod.CREATER = row["CREATER"] == null ? "" : row["CREATER"].ToString();
+                            if (row["CREATE_DATE"] == null || row["CREATE_DATE"].ToString() == "")
+                            {
+                                mod.CREATE_DATE = DateTime.Now;
+                            }
+                            else
+                            {
+                                mod.CREATE_DATE = Convert.ToDateTime(row["CREATE_DATE"].ToString());
+                            }
+                            if (row["CHECK_STATE"] == null || row["CHECK_STATE"].ToString() == "")
+                            {
+                                mod.CHECK_STATE = -1;
+                            }
+                            else
+                            {
+                                mod.CHECK_STATE = Convert.ToInt32(row["CHECK_STATE"].ToString());
+                            }
+                            List<PlatformDetail> list = new List<PlatformDetail>();
+                            if (dtPlatDetail != null && dtPlatDetail.Rows.Count > 0)
+                            {
+                                foreach (DataRow rowd in dtPlatDetail.Rows)
+                                {
+                                    if (row["PLAT_ID"].ToString() == rowd["PLAT_ID"].ToString())
+                                    {
+                                        if (rowd["FILE_TYPE"].ToString() == "0")
+                                        {
+                                            mod.URL = rowd["FILE_URL"] == null ? "" : rowd["FILE_URL"].ToString();
+                                        }
+                                        else
+                                        {
+                                            PlatformDetail detail = new PlatformDetail();
+                                            detail.PLAT_DETAIL_ID = rowd["PLAT_DETAIL_ID"] == null ? "" : rowd["PLAT_DETAIL_ID"].ToString();
+                                            detail.PLAT_ID = rowd["PLAT_ID"] == null ? "" : rowd["PLAT_ID"].ToString();
+                                            detail.CREATER = rowd["CREATER"] == null ? "" : rowd["CREATER"].ToString();
+
+                                            if (rowd["CREATE_DATE"] == null || rowd["CREATE_DATE"].ToString() == "")
+                                            {
+                                                detail.CREATE_DATE = DateTime.Now;
+                                            }
+                                            else
+                                            {
+                                                detail.CREATE_DATE = Convert.ToDateTime(rowd["CREATE_DATE"].ToString());
+                                            }
+                                            detail.FILE_NAME = rowd["FILE_NAME"] == null ? "" : rowd["FILE_NAME"].ToString();
+                                            detail.FILE_SIZE = rowd["FILE_SIZE"].ToString();
+                                            detail.FILE_TYPE = rowd["FILE_TYPE"] == null ? 1 : int.Parse(rowd["FILE_TYPE"].ToString());
+                                            detail.FILE_URL = rowd["FILE_URL"] == null ? "" : rowd["FILE_URL"].ToString();
+                                            list.Add(detail);
+                                        }
+                                    }
+                                }
+                            }
+                            mod.children = list;
+                            modList.Add(mod);
+                        }
+                    }
+                    if (modList.Count > 0)
+                    {
+                        r["code"] = 2000;
+                        r["message"] = "";
+                        r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(modList));
+                        return r;
+                    }
+
+                }
+                r["code"] = 2000;
+                r["message"] = "";
+                r["items"] = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(new DataTable()));
+            }
+            catch (Exception e)
+            {
+                r["total"] = 0;
+                r["items"] = new Dictionary<string, object>();
+                r["code"] = -1;
+                r["message"] = e.Message;
+            }
+            return r;
+        }
     }
 }
