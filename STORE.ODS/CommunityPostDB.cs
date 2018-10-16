@@ -290,6 +290,13 @@ namespace STORE.ODS
             //list.Add("dtR",sql3);
             return db.GetDataSet(list);
         }
+        /// <summary>
+        /// 获取平台详情
+        /// </summary>
+        /// <param name="USEER_ID">用户ID</param>
+        /// <param name="PLAT_ID">平台ID</param>
+        /// <returns></returns>
+
 
         public string delCommentByID(Dictionary<string, object> d)
         {
