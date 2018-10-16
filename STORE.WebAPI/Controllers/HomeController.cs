@@ -147,6 +147,19 @@ namespace STORE.WebAPI.Controllers
             Dictionary<string, object> res = amm.fetchPlatformList(userid, projectid, resourceid, platType, isFirst);
             return Json(res);
         }
+
+        [HttpGet("fetchPlatformDetail")]
+        public IActionResult fetchPlatformDetail(string userid, string projectid,string resourceid)
+        {
+            Dictionary<string, object> res = amm.fetchPlatformDetail(userid,projectid,resourceid);
+            return Json(res);
+        }
+
+        /// <summary>
+        /// 获取帖子详情
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         [HttpPost("fetchPostDetail")]
         public IActionResult fetchPostDetail([FromBody]JObject value)
         {
