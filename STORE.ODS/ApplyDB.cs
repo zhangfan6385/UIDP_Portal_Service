@@ -183,6 +183,7 @@ namespace STORE.ODS
 
             sql += "  from ts_store_service a  where a.SERVICE_ID='" + resourceid + "' ";
             string sql2 = " select * from  ts_store_service_detail where SERVICE_ID='" + resourceid + "' ";
+            sql2 += "AND IS_DELETE='0'";
             d.Add("dtServer", sql);
             d.Add("dtServerDetail", sql2);
             return db.GetDataSet(d);
