@@ -132,6 +132,7 @@ namespace STORE.ODS
             }
             sql += " from ts_store_component a where a.COMPONENT_ID='"+resourceid+"' ";
             string sql2 = " select * from  ts_store_component_detail where COMPONENT_ID='" + resourceid + "' ";
+            sql2 +="AND IS_DELETE='0'";
             d.Add("dtCom", sql);
             d.Add("dtComDetail", sql2);
             return db.GetDataSet(d);
