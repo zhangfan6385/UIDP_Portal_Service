@@ -3,11 +3,12 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iis": {
-      "applicationUrl": "http://localhost/STORE.WebAPI",
+      "applicationUrl": "http://
+        /STORE.WebAPI",
       "sslPort": 0
     },
     "iisExpress": {
-      "applicationUrl": "http://192.168.1.107:2121/",
+      "applicationUrl": "http://192.168.1.102:2121/",
       "sslPort": 0
     }
   },

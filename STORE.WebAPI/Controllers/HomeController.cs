@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Internal;
@@ -165,6 +167,7 @@ namespace STORE.WebAPI.Controllers
         {
             Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
             Dictionary<string, object> res = cpm.fetchPostDetail(d);
+            //HttpResponseMessage result = new HttpResponseMessage{ Content=new StringContent(res.ToString(),Encoding.GetEncoding("UTF-8"),"application/json")};
             return Json(res);
         }
 

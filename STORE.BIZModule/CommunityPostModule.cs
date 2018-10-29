@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Text;
 using STORE.ODS;
 using STORE.UTILITY;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace STORE.BIZModule
 {
@@ -171,7 +171,9 @@ namespace STORE.BIZModule
                             postModel.USER_NAME = dr["USER_NAME"] == null ? "" : dr["USER_NAME"].ToString();
                             postModel.TITLE_NAME = dr["TITLE_NAME"] == null ? "" : dr["TITLE_NAME"].ToString();
                             postModel.POST_TYPE = Convert.ToInt32(dr["POST_TYPE"].ToString());
-                            postModel.POST_CONTENT = dr["POST_CONTENT"].ToString();
+                            string str1 = dr["POST_CONTENT"].ToString();
+                            //postModel.POST_CONTENT = dr["POST_CONTENT"].ToString();
+                            postModel.POST_CONTENT = Regex.Replace(str1,"/>", ">");
                             postModel.SCORE_POINT = Convert.ToDouble(dr["SCORE_POINT"].ToString());
                             postModel.BROWSE_NUM = Convert.ToInt32(dr["BROWSE_NUM"].ToString());
                             postModel.POST_STATUS = Convert.ToInt32(dr["POST_STATUS"].ToString());
