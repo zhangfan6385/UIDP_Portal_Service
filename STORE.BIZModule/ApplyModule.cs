@@ -227,13 +227,25 @@ namespace STORE.BIZModule
                             mod.CHECK_STATE = Convert.ToInt32(dtCom.Rows[0]["CHECK_STATE"].ToString());
                         }
                         List<ComponentDetail> list = new List<ComponentDetail>();
+                        List<Package> list1 = new List<Package>();
                         if (dtComDetail != null && dtComDetail.Rows.Count > 0)
                         {
                             foreach (DataRow row in dtComDetail.Rows)
                             {
                                     if (row["FILE_TYPE"].ToString() == "0")
                                     {
-                                        mod.URL = row["FILE_URL"] == null ? "" : row["FILE_URL"].ToString();
+                                        Package mod1 = new Package();
+                                        mod1.PACKAGE_NAME=row["FILE_NAME"] == null ? "" : row["FILE_NAME"].ToString();
+                                        mod1.PACKAGE_URL = row["FILE_URL"] == null ? "" : row["FILE_URL"].ToString();
+                                        if (row["FILE_SIZE"] == null || row["FILE_SIZE"].ToString() == "")
+                                        {
+                                            mod1.PACKAGE_SIZE = "";
+                                        }
+                                        else
+                                        {
+                                            mod1.PACKAGE_SIZE = row["FILE_SIZE"].ToString();
+                                        }
+                                    list1.Add(mod1);
                                     }
                                     else
                                     {
@@ -257,6 +269,7 @@ namespace STORE.BIZModule
                                     }
                             }
                         }
+                        mod.packages = list1;
                         mod.children = list;
                     }
                     r["code"] = 2000;

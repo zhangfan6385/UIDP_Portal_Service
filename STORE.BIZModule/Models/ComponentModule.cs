@@ -4,7 +4,7 @@ using System.Text;
 
 namespace STORE.BIZModule
 {
-   public class ComponentModule
+    public class ComponentModule
     {
         public string COMPONENT_ID { get; set; }
         public string COMPONENT_CODE { get; set; }
@@ -23,10 +23,10 @@ namespace STORE.BIZModule
         public string CREATER { get; set; }
         public DateTime CREATE_DATE { get; set; }
         public int CHECK_STATE { get; set; }
-        public string URL { get; set; }
         public DateTime COMPONENT_PUBLISHDATE { get; set; }
         public string COMPONENT_VERSION { get; set; }
         public List<ComponentDetail> children { get; set; }
+        public List<Package> packages { get; set; }
     }
     public class ComponentDetail {
         public string COMPONENT_DETAIL_ID { get; set; }
@@ -37,5 +37,11 @@ namespace STORE.BIZModule
         public string FILE_SIZE { get; set; }
         public string CREATER { get; set; }
         public DateTime CREATE_DATE { get; set; }
+    }
+    public class Package
+    {
+        public string PACKAGE_NAME { get; set; }
+        public string PACKAGE_URL { get; set; }
+        public string PACKAGE_SIZE { get; set; }
     }
 }
