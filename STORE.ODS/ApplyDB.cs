@@ -121,9 +121,11 @@ namespace STORE.ODS
                 sql += " ,(select b.CHECK_STATE  from ts_store_application b   ";
                 sql += " where a.COMPONENT_ID=b.APPLY_RESOURCE_ID  ";
                 sql += " and (b.APPLY_EXPIRET>'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' or b.APPLY_EXPIRET is null or b.APPLY_EXPIRET='') ";
+                sql += " AND b.IS_DELETE='0'";
                 sql += "AND (b.CHECK_STATE!=2)";
                 sql += " and case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
                 sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
+                sql += " AND b.IS_DELETE='0'";
                 sql += " ) CHECK_STATE ";//按照有效期判断审核状态 登录后调用
             }
             else
@@ -166,12 +168,14 @@ namespace STORE.ODS
                 sql += " ,(select b.CHECK_STATE  from ts_store_application b   ";
                 sql += " where a.SERVICE_ID=b.APPLY_RESOURCE_ID  ";
                 sql += " and (b.APPLY_EXPIRET>'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' or b.APPLY_EXPIRET is null or b.APPLY_EXPIRET='') ";
+                sql += " AND b.IS_DELETE='0'";
                 sql += " and case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
                 sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
                 sql += " ) CHECK_STATE ";//按照有效期判断审核状态 登录后调用
                 sql += " ,(select b.SERVICE_CODE  from ts_store_application b   ";
                 sql += " where a.SERVICE_ID=b.APPLY_RESOURCE_ID  ";
                 sql += " and (b.APPLY_EXPIRET>'" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' or b.APPLY_EXPIRET is null or b.APPLY_EXPIRET='') ";
+                sql += " AND b.IS_DELETE='0'";
                 sql += " and case when b.PROJECT_ID is null or b.PROJECT_ID='' THEN '" + projectid + "' else b.PROJECT_ID end = '" + projectid + "' ";
                 sql += " and case when b.APPLY_USERID is null or b.APPLY_USERID='' THEN '" + userid + "' else b.APPLY_USERID end = '" + userid + "' ";
                 sql += " ) SERVICE_CODE2 ";//按照有效期判断审核状态 登录后调用
