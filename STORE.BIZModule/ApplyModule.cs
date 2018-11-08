@@ -610,9 +610,9 @@ namespace STORE.BIZModule
                                 mod.PLAT_PUBLISHDATE = DateTime.Parse(row["PLAT_PUBLISHDATE"].ToString());
                             }
                             mod.PLAT_SIZE = row["PLAT_SIZE"] == null ? "" : row["PLAT_SIZE"].ToString();
-                            mod.SOFTWARE_LANGUAGE = row["MANAGE_TEL"] == null ? "" : row["MANAGE_TEL"].ToString();
-                            mod.SUIT_PLAT = row["MANAGE_ROLE_ID"] == null ? "" : row["MANAGE_ROLE_ID"].ToString();
-                            mod.PLAT_RUNREQUIRE = row["MANAGE_ROLE_ID"] == null ? "" : row["MANAGE_ROLE_ID"].ToString();
+                            mod.SOFTWARE_LANGUAGE = row["SOFTWARE_LANGUAGE"] == null ? "" : row["SOFTWARE_LANGUAGE"].ToString();
+                            mod.SUIT_PLAT = row["SUIT_PLAT"] == null ? "" : row["SUIT_PLAT"].ToString();
+                            mod.PLAT_RUNREQUIRE = row["PLAT_RUNREQUIRE"] == null ? "" : row["PLAT_RUNREQUIRE"].ToString();
                             if (row["PLAT_TYPE"] == null || row["PLAT_TYPE"].ToString() == "")
                             {
                                 mod.PLAT_TYPE = 0;
@@ -628,7 +628,6 @@ namespace STORE.BIZModule
                             mod.MANAGE_TEL = row["MANAGE_TEL"] == null ? "" : row["MANAGE_TEL"].ToString();
 
                             mod.APPLICATION_BROWSER = row["APPLICATION_BROWSER"] == null ? "" : row["APPLICATION_BROWSER"].ToString();
-                            mod.SUIT_PLAT = row["SUIT_PLAT"] == null ? "" : row["SUIT_PLAT"].ToString();
                             mod.IS_DELETE = row["IS_DELETE"] == null ? 0 : int.Parse(row["IS_DELETE"].ToString());
                             mod.CREATER = row["CREATER"] == null ? "" : row["CREATER"].ToString();
                             if (row["CREATE_DATE"] == null || row["CREATE_DATE"].ToString() == "")
