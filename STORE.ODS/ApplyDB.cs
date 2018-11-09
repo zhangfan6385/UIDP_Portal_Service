@@ -248,6 +248,7 @@ namespace STORE.ODS
             sql += "  from ts_store_platform a  ";
             sql += "where a.PLAT_ID='" + resourceid + "'";
             string sql2 = "select * from ts_store_platform_detail where PLAT_ID='" + resourceid + "'";
+            sql2 += "and IS_DELETE='0'";
             d.Add("dtPlat", sql);
             d.Add("dtPlatDetail", sql2);
             return db.GetDataSet(d);
