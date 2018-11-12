@@ -70,7 +70,7 @@ namespace STORE.WebAPI.Controllers
                 }
                 else
                 {
-					 password = UIDP.Security.SecurityHelper.StringToMD5Hash(password);
+					 password = Security.SecurityHelper.StringToMD5Hash(password);
                     DataTable dt = um.getUserInfoByName(username);
                     if (dt == null || dt.Rows.Count == 0)
                     {
@@ -203,7 +203,7 @@ namespace STORE.WebAPI.Controllers
         {
             Dictionary<string, object> d = value.ToObject<Dictionary<string, object>>();
             string userCode = d["userCode"] == null ? "" : d["userCode"].ToString();
-            string password = d["password"] == null ? "" : UIDP.Security.SecurityHelper.StringToMD5Hash(d["password"].ToString());
+            string password = d["password"] == null ? "" : Security.SecurityHelper.StringToMD5Hash(d["password"].ToString());
             string userId = "";
             string userName = "云主机推送服务";
             string accessToken = "";
