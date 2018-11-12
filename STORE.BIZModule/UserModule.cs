@@ -114,7 +114,9 @@ namespace STORE.BIZModule
             //}
             //else
             //{
-                DataTable dt = db.IsInvalidPassword(d);
+            d["newpassword"] = Security.SecurityHelper.StringToMD5Hash(d["newpassword"].ToString());
+            d["password"] = Security.SecurityHelper.StringToMD5Hash(d["password"].ToString());
+            DataTable dt = db.IsInvalidPassword(d);
                 if (dt == null || dt.Rows.Count == 0)
                 {
                     return "用户名或密码不正确！";
